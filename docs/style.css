@@ -666,3 +666,69 @@ h1, h2, h3, h4 {
     .tech-grid { grid-template-columns: 1fr; }
     .nav-links { display: none; }
 }
+
+/* =====================================================================
+   FAQ Accordion Section (Google Rich Snippets SEO)
+   ===================================================================== */
+.faq-section {
+    padding: 90px 0;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.faq-accordion {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.faq-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dark);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+.faq-item.active {
+    border-color: var(--border-gold);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px var(--gold-glow);
+}
+
+.faq-question {
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    user-select: none;
+}
+.faq-question:hover {
+    color: var(--gold-accent);
+}
+
+.faq-icon {
+    font-size: 1.2rem;
+    color: var(--gold-accent);
+    transition: transform 0.25s ease;
+}
+.faq-item.active .faq-icon {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    padding: 0 24px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.faq-item.active .faq-answer {
+    padding: 0 24px 20px;
+    max-height: 350px;
+}

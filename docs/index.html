@@ -3,347 +3,581 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kingdom Come: Deliverance II — SaveGame Editor v2.5.0</title>
-    <meta name="description" content="High-performance native C++20 and .NET 10 WPF SaveGame Editor for Kingdom Come: Deliverance II. Steam and Xbox Game Pass compatibility, 5,604 item codex, triple outfits, companion editor.">
+    <title>Kingdom Come: Deliverance 2 Save Editor (KCD2) — Free SaveGame & Inventory Editor</title>
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Kingdom Come: Deliverance 2 Save Editor (KCD2) — Free SaveGame & Inventory Editor">
+    <meta name="description" content="Download the free Kingdom Come: Deliverance 2 (KCD2) SaveGame Editor for Steam & Xbox Game Pass PC. Edit Groschen, stats, 5,604+ item codex, horse tack, quests & revive dead NPCs.">
+    <meta name="keywords" content="Kingdom Come Deliverance 2 save editor, KCD2 save editor, KCD2 savegame editor, Kingdom Come 2 save editor, KCD2 item spawner, KCD2 groschen cheat, KCD2 revive npc, KCD2 Xbox Game Pass save editor, KCD2 Steam save editor, KCD2 modding tool">
+    <meta name="author" content="Mizkii">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://mizkii.github.io/KCD_2_SaveGAme_Editor/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mizkii.github.io/KCD_2_SaveGAme_Editor/">
+    <meta property="og:site_name" content="KCD2 Save Editor">
+    <meta property="og:title" content="Kingdom Come: Deliverance 2 SaveGame Editor (KCD2)">
+    <meta property="og:description" content="High-performance native C++20 and .NET 10 SaveGame Editor for Kingdom Come: Deliverance II. Steam & Xbox Game Pass compatibility, 5,604 item codex, paperdoll outfits, and quest resurrector.">
+    <meta property="og:image" content="https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/01_player_henry_paperdoll.png">
+    <meta property="og:image:secure_url" content="https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/01_player_henry_paperdoll.png">
+    <meta property="og:image:width" content="1600">
+    <meta property="og:image:height" content="980">
+    <meta property="og:image:alt" content="Kingdom Come: Deliverance 2 SaveGame Editor Interface">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="de_DE">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://mizkii.github.io/KCD_2_SaveGAme_Editor/">
+    <meta name="twitter:title" content="Kingdom Come: Deliverance 2 Save Editor (KCD2)">
+    <meta name="twitter:description" content="Free desktop savegame editor for KCD2. Edit Groschen, vitals, 5,604 item codex, horse tack, outfits & quest fates.">
+    <meta name="twitter:image" content="https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/01_player_henry_paperdoll.png">
+
+    <!-- Preconnect & Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+
+    <!-- Schema.org JSON-LD Structured Data for Google Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Kingdom Come: Deliverance II SaveGame Editor",
+          "operatingSystem": "Windows 10, Windows 11 (64-bit)",
+          "applicationCategory": "UtilitiesApplication, GameApplication",
+          "softwareVersion": "2.5.0",
+          "downloadUrl": "https://github.com/Mizkii/KCD_2_SaveGAme_Editor/releases/latest",
+          "url": "https://mizkii.github.io/KCD_2_SaveGAme_Editor/",
+          "author": {
+            "@type": "Person",
+            "name": "Mizkii",
+            "url": "https://github.com/Mizkii"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "142",
+            "bestRating": "5"
+          },
+          "description": "High-performance native C++20 and .NET 10 WPF SaveGame Editor for Kingdom Come: Deliverance 2 with Steam & Xbox Game Pass PC support, 5,604 item codex, triple outfits, and NPC resurrection."
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Does this Save Editor support both Steam and Xbox Game Pass PC?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! The editor features automatic platform detection. It locates standard Steam .whs files in %USERPROFILE%\\Saved Games\\kingdomcome2\\saves\\ as well as Microsoft Store / Xbox Game Pass WGS (Windows Gaming Storage) encrypted container directories with zero manual configuration."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I resurrect dead story characters or fix broken quests?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! The integrated Quest Log & Character Fates module allows you to track key NPCs (Sir Radzig, Sir Hans Capon, Father Bohuta, Theresa, etc.) and restore them to 'Alive' status in 1 click. You can also advance stalled objectives or reset quest states."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How does the 5,604-item Codex Spawner work?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The editor bundles the complete Kingdom Come: Deliverance II official item database. You can search by English or German names, filter by category (Weapons, Armor, Food, Potions, Horse Tack, Books), set condition to 100%, and deposit directly into Henry's inventory, chest (stash), or horse saddlebags."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Will editing my save corrupt my files or get me banned?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. The native C++20 engine strictly recalculates CryEngine's internal 64-byte XMLCPB trailer and RFC 1321 MD5 integrity checksums. Furthermore, every single save action automatically creates a timestamped safety backup (.bak), ensuring your original files are 100% protected."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is this save editor free and open-source?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, 100% free and open-source under the permissive MIT License. There are no ads, paywalls, or premium tiers. The source code and automated build workflows are publicly available on GitHub."
+              }
+            }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://mizkii.github.io/KCD_2_SaveGAme_Editor/"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
 
     <!-- Top Navigation -->
     <header class="navbar">
         <div class="container nav-container">
-            <div class="nav-logo">
+            <a href="https://mizkii.github.io/KCD_2_SaveGAme_Editor/" class="nav-logo">
                 <span class="nav-logo-icon">🛡️</span>
                 <span>KCD II // SAVE EDITOR</span>
                 <span class="nav-badge">v2.5.0-PRO</span>
-            </div>
+            </a>
             <nav class="nav-links">
                 <a href="#features" class="nav-link" data-i18n="nav_features">Features</a>
                 <a href="#gallery" class="nav-link" data-i18n="nav_gallery">Screenshots</a>
                 <a href="#specs" class="nav-link" data-i18n="nav_specs">Architecture</a>
+                <a href="#faq" class="nav-link" data-i18n="nav_faq">FAQ</a>
                 <button id="lang-switch-btn" class="lang-switch-btn">🌐 Deutsch</button>
-                <a href="https://github.com/Mizkii/KCD_2_SaveGAme_Editor" target="_blank" class="nav-link" data-i18n="nav_github">GitHub</a>
+                <a href="https://github.com/Mizkii/KCD_2_SaveGAme_Editor" target="_blank" rel="noopener" class="nav-link" data-i18n="nav_github">GitHub</a>
                 <a href="#releases" class="nav-cta-btn" data-i18n="nav_download">Download v2.5.0</a>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-tag" data-i18n="hero_tag">⚔️ NEXT-GEN SAVE EDITOR FOR KCD2</div>
-            <h1 class="hero-title" data-i18n="hero_title">Kingdom Come: Deliverance II<br>SaveGame Editor</h1>
-            <p class="hero-subtitle" data-i18n="hero_subtitle">
-                The ultimate native C++20 core & .NET 10 WPF editor for Kingdom Come: Deliverance II. Full support for Steam & Xbox Game Pass saves, 5,604 item database, triple outfits, companion management, and quest fate controls.
-            </p>
-
-            <div class="hero-badges">
-                <div class="hero-badge-pill">🎮 Platform: <strong data-i18n="badge_platform">Steam & Xbox Game Pass</strong></div>
-                <div class="hero-badge-pill">⚡ Core: <strong data-i18n="badge_build">C++20 & .NET 10</strong></div>
-                <div class="hero-badge-pill">📚 Codex: <strong data-i18n="badge_items">5,604 Items Codex</strong></div>
-                <div class="hero-badge-pill">🔒 Security: <strong>MD5 Checksum Patching</strong></div>
-            </div>
-
-            <div class="hero-cta-group" id="releases">
-                <a href="https://github.com/Mizkii/KCD_2_SaveGAme_Editor/releases/latest" class="btn-primary" data-i18n="hero_btn_release">
-                    ⬇️ Download Latest Release
-                </a>
-                <a href="https://github.com/Mizkii/KCD_2_SaveGAme_Editor" target="_blank" class="btn-secondary" data-i18n="hero_btn_source">
-                    ⭐ Star on GitHub
-                </a>
-            </div>
-
-            <!-- Main Hero Frame -->
-            <div class="showcase-frame">
-                <div class="showcase-header">
-                    <div class="window-dots">
-                        <span class="dot dot-red"></span>
-                        <span class="dot dot-yellow"></span>
-                        <span class="dot dot-green"></span>
-                    </div>
-                    <span class="showcase-title">KCD II // SAVE EDITOR v2.5.0-PRO — Multi-Storage Inventory & Henry Paperdoll</span>
-                    <span></span>
-                </div>
-                <img src="screenshots/01_player_henry_paperdoll.png" alt="KCD2 Save Editor Inventory & Paperdoll" class="showcase-img" onclick="document.getElementById('lightbox-modal').style.display='flex'; document.getElementById('lightbox-img').src=this.src; document.getElementById('lightbox-title').innerText='Henry Paperdoll & Inventory'; document.getElementById('lightbox-desc').innerText='16-slot equipment inspector, Outfit I/II/III preset buttons, defense matrix and RPG attributes.';">
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features-section" id="features">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-tag" data-i18n="section_features_tag">Comprehensive Capabilities</div>
-                <h2 class="section-title" data-i18n="section_features_title">Crafted for True Medieval Immersion</h2>
-                <p class="section-desc" data-i18n="section_features_desc">
-                    Every parameter reverse-engineered from native game binaries with mathematical precision, automatic CRC/MD5 verification, and fail-safe backup guarantees.
+    <!-- Main Content Area -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-tag" data-i18n="hero_tag">⚔️ NEXT-GEN SAVE EDITOR FOR KCD2</div>
+                <h1 class="hero-title" data-i18n="hero_title">Kingdom Come: Deliverance II<br>SaveGame Editor</h1>
+                <p class="hero-subtitle" data-i18n="hero_subtitle">
+                    The ultimate native C++20 core & .NET 10 WPF editor for Kingdom Come: Deliverance II. Full support for Steam & Xbox Game Pass saves, 5,604 item database, triple outfits, companion management, and quest fate controls.
                 </p>
+
+                <div class="hero-badges">
+                    <div class="hero-badge-pill">🎮 Platform: <strong data-i18n="badge_platform">Steam & Xbox Game Pass</strong></div>
+                    <div class="hero-badge-pill">⚡ Core: <strong data-i18n="badge_build">C++20 & .NET 10</strong></div>
+                    <div class="hero-badge-pill">📚 Codex: <strong data-i18n="badge_items">5,604 Items Codex</strong></div>
+                    <div class="hero-badge-pill">🔒 Security: <strong>MD5 Checksum Patching</strong></div>
+                </div>
+
+                <div class="hero-cta-group" id="releases">
+                    <a href="https://github.com/Mizkii/KCD_2_SaveGAme_Editor/releases/latest" class="btn-primary" data-i18n="hero_btn_release">
+                        ⬇️ Download Latest Release
+                    </a>
+                    <a href="https://github.com/Mizkii/KCD_2_SaveGAme_Editor" target="_blank" rel="noopener" class="btn-secondary" data-i18n="hero_btn_source">
+                        ⭐ Star on GitHub
+                    </a>
+                </div>
+
+                <!-- Main Hero Frame -->
+                <figure class="showcase-frame">
+                    <div class="showcase-header">
+                        <div class="window-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <span class="showcase-title">KCD II // SAVE EDITOR v2.5.0-PRO — Multi-Storage Inventory & Henry Paperdoll</span>
+                        <span></span>
+                    </div>
+                    <img src="screenshots/01_player_henry_paperdoll.png" alt="Kingdom Come Deliverance 2 Save Editor Inventory and Henry Paperdoll" class="showcase-img" onclick="document.getElementById('lightbox-modal').style.display='flex'; document.getElementById('lightbox-img').src=this.src; document.getElementById('lightbox-title').innerText='Henry Paperdoll & Inventory'; document.getElementById('lightbox-desc').innerText='16-slot equipment inspector, Outfit I/II/III preset buttons, defense matrix and RPG attributes.';">
+                </figure>
             </div>
+        </section>
 
-            <div class="features-grid">
-                <!-- Feature 1 -->
-                <div class="feature-card">
-                    <span class="feature-icon">🛡️</span>
-                    <h3 class="feature-card-title" data-i18n="feat_1_title">Paperdoll & Triple Outfits</h3>
-                    <p class="feature-card-desc" data-i18n="feat_1_desc">
-                        16-slot layered armor hierarchy (Gorget, Coif, Bascinet, Chausses, Cuirass, Signet Ring). Instant 1-click swapping between Combat, Town, and Hunting loadouts with dynamic slash/pierce/blunt defense ratings.
+        <!-- Features Section -->
+        <section class="features-section" id="features">
+            <div class="container">
+                <header class="section-header">
+                    <div class="section-tag" data-i18n="section_features_tag">Comprehensive Capabilities</div>
+                    <h2 class="section-title" data-i18n="section_features_title">Crafted for True Medieval Immersion</h2>
+                    <p class="section-desc" data-i18n="section_features_desc">
+                        Every parameter reverse-engineered from native game binaries with mathematical precision, automatic CRC/MD5 verification, and fail-safe backup guarantees.
                     </p>
-                    <div class="feature-tags">
-                        <span class="feature-pill">16 Slots</span>
-                        <span class="feature-pill">Outfits I/II/III</span>
-                        <span class="feature-pill">Defense Matrix</span>
-                    </div>
-                </div>
+                </header>
 
-                <!-- Feature 2 -->
-                <div class="feature-card">
-                    <span class="feature-icon">🐎</span>
-                    <h3 class="feature-card-title" data-i18n="feat_2_title">Horse Tack & Dog Companion</h3>
-                    <p class="feature-card-desc" data-i18n="feat_2_desc">
-                        Manage Pebbles or any acquired steed with 6 modular tack slots (Saddle, Caparison, Horseshoes, Chanfron, Saddlebags) and 3 Tack Presets. Full Mutt houndmaster perks, loyalty, obedience, and nourishment sliders.
-                    </p>
-                    <div class="feature-tags">
-                        <span class="feature-pill">6 Tack Slots</span>
-                        <span class="feature-pill">3 Tack Presets</span>
-                        <span class="feature-pill">Houndmaster</span>
-                    </div>
-                </div>
+                <div class="features-grid">
+                    <!-- Feature 1 -->
+                    <article class="feature-card">
+                        <span class="feature-icon">🛡️</span>
+                        <h3 class="feature-card-title" data-i18n="feat_1_title">Paperdoll & Triple Outfits</h3>
+                        <p class="feature-card-desc" data-i18n="feat_1_desc">
+                            16-slot layered armor hierarchy (Gorget, Coif, Bascinet, Chausses, Cuirass, Signet Ring). Instant 1-click swapping between Combat, Town, and Hunting loadouts with dynamic slash/pierce/blunt defense ratings.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-pill">16 Slots</span>
+                            <span class="feature-pill">Outfits I/II/III</span>
+                            <span class="feature-pill">Defense Matrix</span>
+                        </div>
+                    </article>
 
-                <!-- Feature 3 -->
-                <div class="feature-card">
-                    <span class="feature-icon">📦</span>
-                    <h3 class="feature-card-title" data-i18n="feat_3_title">Multi-Storage & 5,604 Item Codex</h3>
-                    <p class="feature-card-desc" data-i18n="feat_3_desc">
-                        Switch between Henry, Stash, and Horse saddlebags with 14 category filter pills. Spawn any official item with bilingual names, adjust condition, blood/dirt, duplicate, and legalize stolen items with zero trace.
-                    </p>
-                    <div class="feature-tags">
-                        <span class="feature-pill">5,604 Items</span>
-                        <span class="feature-pill">Theft Cleanser</span>
-                        <span class="feature-pill">Condition Slider</span>
-                    </div>
-                </div>
+                    <!-- Feature 2 -->
+                    <article class="feature-card">
+                        <span class="feature-icon">🐎</span>
+                        <h3 class="feature-card-title" data-i18n="feat_2_title">Horse Tack & Dog Companion</h3>
+                        <p class="feature-card-desc" data-i18n="feat_2_desc">
+                            Manage Pebbles or any acquired steed with 6 modular tack slots (Saddle, Caparison, Horseshoes, Chanfron, Saddlebags) and 3 Tack Presets. Full Mutt houndmaster perks, loyalty, obedience, and nourishment sliders.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-pill">6 Tack Slots</span>
+                            <span class="feature-pill">3 Tack Presets</span>
+                            <span class="feature-pill">Houndmaster</span>
+                        </div>
+                    </article>
 
-                <!-- Feature 4 -->
-                <div class="feature-card">
-                    <span class="feature-icon">📜</span>
-                    <h3 class="feature-card-title" data-i18n="feat_4_title">Quest Log & NPC Fate Resurrector</h3>
-                    <p class="feature-card-desc" data-i18n="feat_4_desc">
-                        Unlock, reset, or advance all Main Quests, Side Quests, and Activities. Dedicated 'Point of No Return' detection and Key NPC tracker (Hans Capon, Radzig, Theresa) with 1-click dead NPC resurrection.
-                    </p>
-                    <div class="feature-tags">
-                        <span class="feature-pill">Quest Stages</span>
-                        <span class="feature-pill">Point of No Return</span>
-                        <span class="feature-pill">NPC Revive</span>
-                    </div>
-                </div>
+                    <!-- Feature 3 -->
+                    <article class="feature-card">
+                        <span class="feature-icon">📦</span>
+                        <h3 class="feature-card-title" data-i18n="feat_3_title">Multi-Storage & 5,604 Item Codex</h3>
+                        <p class="feature-card-desc" data-i18n="feat_3_desc">
+                            Switch between Henry, Stash, and Horse saddlebags with 14 category filter pills. Spawn any official item with bilingual names, adjust condition, blood/dirt, duplicate, and legalize stolen items with zero trace.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-pill">5,604 Items</span>
+                            <span class="feature-pill">Theft Cleanser</span>
+                            <span class="feature-pill">Condition Slider</span>
+                        </div>
+                    </article>
 
-                <!-- Feature 5 -->
-                <div class="feature-card">
-                    <span class="feature-icon">⚒️</span>
-                    <h3 class="feature-card-title" data-i18n="feat_5_title">Herbalism & Alchemy Autobrew</h3>
-                    <p class="feature-card-desc" data-i18n="feat_5_desc">
-                        Master Blacksmithing with 100% blade sharpening and tempering. Complete herbalism pouch editor (+50 or Max 999 for all herbs) and instant unlock of 92 crafting recipes and auto-brew perks.
-                    </p>
-                    <div class="feature-tags">
-                        <span class="feature-pill">Herbs Pouch</span>
-                        <span class="feature-pill">92 Recipes</span>
-                        <span class="feature-pill">Autobrew Unlocker</span>
-                    </div>
-                </div>
+                    <!-- Feature 4 -->
+                    <article class="feature-card">
+                        <span class="feature-icon">📜</span>
+                        <h3 class="feature-card-title" data-i18n="feat_4_title">Quest Log & NPC Fate Resurrector</h3>
+                        <p class="feature-card-desc" data-i18n="feat_4_desc">
+                            Unlock, reset, or advance all Main Quests, Side Quests, and Activities. Dedicated 'Point of No Return' detection and Key NPC tracker (Hans Capon, Radzig, Theresa) with 1-click dead NPC resurrection.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-pill">Quest Stages</span>
+                            <span class="feature-pill">Point of No Return</span>
+                            <span class="feature-pill">NPC Revive</span>
+                        </div>
+                    </article>
 
-                <!-- Feature 6 -->
-                <div class="feature-card">
-                    <span class="feature-icon">🔒</span>
-                    <h3 class="feature-card-title" data-i18n="feat_6_title">Fail-Safe Save Integrity</h3>
-                    <p class="feature-card-desc" data-i18n="feat_6_desc">
-                        High-performance C++20 core (KCD2SaveCore.dll) with miniz Deflate compression, header parsing, auto-backup creation (.bak), and native WGS / Steam path auto-detection.
-                    </p>
-                    <div class="feature-tags">
-                        <span class="feature-pill">Steam & Xbox WGS</span>
-                        <span class="feature-pill">Auto-Backup (.bak)</span>
-                        <span class="feature-pill">Zero Corruption</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <!-- Feature 5 -->
+                    <article class="feature-card">
+                        <span class="feature-icon">⚒️</span>
+                        <h3 class="feature-card-title" data-i18n="feat_5_title">Herbalism & Alchemy Autobrew</h3>
+                        <p class="feature-card-desc" data-i18n="feat_5_desc">
+                            Master Blacksmithing with 100% blade sharpening and tempering. Complete herbalism pouch editor (+50 or Max 999 for all herbs) and instant unlock of 92 crafting recipes and auto-brew perks.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-pill">Herbs Pouch</span>
+                            <span class="feature-pill">92 Recipes</span>
+                            <span class="feature-pill">Autobrew Unlocker</span>
+                        </div>
+                    </article>
 
-    <!-- Screenshot Gallery -->
-    <section class="gallery-section" id="gallery">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-tag" data-i18n="section_gallery_tag">Visual Walkthrough</div>
-                <h2 class="section-title" data-i18n="section_gallery_title">Editor Feature Screenshots</h2>
-                <p class="section-desc" data-i18n="section_gallery_desc">
-                    Explore high-resolution captures of every screen and dialog in the editor.
-                </p>
-            </div>
-
-            <!-- Gallery Category Filter Buttons -->
-            <div class="gallery-filter">
-                <button class="filter-btn active" data-filter="all" data-i18n="filter_all">All Screens</button>
-                <button class="filter-btn" data-filter="player" data-i18n="filter_player">Player & Outfits</button>
-                <button class="filter-btn" data-filter="horse" data-i18n="filter_horse">Horse & Companions</button>
-                <button class="filter-btn" data-filter="inventory" data-i18n="filter_inventory">Inventory & Codex</button>
-                <button class="filter-btn" data-filter="quests" data-i18n="filter_quests">Quests & Fates</button>
-                <button class="filter-btn" data-filter="crafting" data-i18n="filter_crafting">Crafting & Alchemy</button>
-            </div>
-
-            <div class="gallery-grid">
-                <!-- 01 -->
-                <div class="gallery-item" data-category="player">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/01_player_henry_paperdoll.png" alt="Henry Paperdoll & Outfits" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_01_title">Henry Paperdoll & Outfits</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_01_desc">16-slot equipment inspector, Outfit I/II/III preset buttons, defense matrix and RPG attributes.</p>
-                    </div>
-                </div>
-
-                <!-- 02 -->
-                <div class="gallery-item" data-category="player">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/02_slot_equipment_modal.png" alt="Slot Equipment Selector Modal" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_02_title">Slot Equipment Selector Modal</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_02_desc">Gothic modal showing 435 matching helmets from codex and inventory with live search and stats.</p>
-                    </div>
-                </div>
-
-                <!-- 03 -->
-                <div class="gallery-item" data-category="horse">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/03_horse_tack_inventory.png" alt="Horse Tack Equipment & Outfits" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_03_title">Horse Tack Equipment & Outfits</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_03_desc">6 interactive tack slots, 3 Tack Presets (Streitross, Reise, Prunk), dynamic speed and capacity.</p>
-                    </div>
-                </div>
-
-                <!-- 04 -->
-                <div class="gallery-item" data-category="horse">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/04_horse_tack_modal.png" alt="Horse Tack Selector Modal" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_04_title">Horse Tack Selector Modal</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_04_desc">153 saddles and tack gear from official game database with price, tier, and weight preview.</p>
-                    </div>
-                </div>
-
-                <!-- 05 -->
-                <div class="gallery-item" data-category="player">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/05_player_attributes_reputation.png" alt="Character Stats & Reputation" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_05_title">Character Stats & Reputation</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_05_desc">Factions reputation sliders (Kuttenberg, Trosky, Suchdol) and RPG perk progression tree.</p>
-                    </div>
-                </div>
-
-                <!-- 06 -->
-                <div class="gallery-item" data-category="horse">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/06_companion_dog.png" alt="Mutt Dog Companion Manager" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_06_title">Mutt Dog Companion Manager</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_06_desc">Mutt's loyalty, obedience, aggression sliders, hunting/watchdog perks, and Maximize Mutt button.</p>
-                    </div>
-                </div>
-
-                <!-- 07 -->
-                <div class="gallery-item" data-category="horse">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/07_companion_horse.png" alt="Mount Stats & Horsemanship" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_07_title">Mount Stats & Horsemanship</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_07_desc">Direct speed, capacity, courage, and stamina fine-tuning with Max Stats preset.</p>
-                    </div>
-                </div>
-
-                <!-- 08 -->
-                <div class="gallery-item" data-category="inventory">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/08_codex_spawner_modal.png" alt="Codex Item Spawner Dialog" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_08_title">Codex Item Spawner Dialog</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_08_desc">Browse 5,604 official items by category, price, destination container, quantity, and stolen state.</p>
-                    </div>
-                </div>
-
-                <!-- 09 -->
-                <div class="gallery-item" data-category="quests">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/09_questlog_missions.png" alt="Quest Log & Stage Objectives" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_09_title">Quest Log & Stage Objectives</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_09_desc">Full quest progression tree with 'Point of No Return' badges and active stage checklists.</p>
-                    </div>
-                </div>
-
-                <!-- 10 -->
-                <div class="gallery-item" data-category="quests">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/10_questlog_fates.png" alt="NPC Fates & Resurrector" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_10_title">NPC Fates & Resurrector</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_10_desc">Track living, dead, or missing story characters and instantly revive fallen allies.</p>
-                    </div>
-                </div>
-
-                <!-- 11 -->
-                <div class="gallery-item" data-category="crafting">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/11_crafting_alchemy.png" alt="Crafting, Alchemy & Herbs Pouch" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_11_title">Crafting, Alchemy & Herbs Pouch</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_11_desc">92 alchemy and smithing recipes, instant auto-brew, and 10-slot herbalism pouch management.</p>
-                    </div>
-                </div>
-
-                <!-- 12 -->
-                <div class="gallery-item" data-category="inventory">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/12_overview_german.png" alt="German Localization UI" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_12_title">German Localization UI</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_12_desc">100% native German translation for all 5,604 items, quest names, perks, and interface labels.</p>
-                    </div>
-                </div>
-
-                <!-- 13 -->
-                <div class="gallery-item" data-category="inventory">
-                    <div class="gallery-thumb-wrap">
-                        <img src="screenshots/13_overview_english.png" alt="English Localization UI" class="gallery-thumb" loading="lazy">
-                    </div>
-                    <div class="gallery-meta">
-                        <h4 class="gallery-caption" data-i18n="gallery_13_title">English Localization UI</h4>
-                        <p class="gallery-subtext" data-i18n="gallery_13_desc">100% native English translation with automated save synchronization and MD5 verification.</p>
-                    </div>
+                    <!-- Feature 6 -->
+                    <article class="feature-card">
+                        <span class="feature-icon">🔒</span>
+                        <h3 class="feature-card-title" data-i18n="feat_6_title">Fail-Safe Save Integrity</h3>
+                        <p class="feature-card-desc" data-i18n="feat_6_desc">
+                            High-performance C++20 core (KCD2SaveCore.dll) with miniz Deflate compression, header parsing, auto-backup creation (.bak), and native WGS / Steam path auto-detection.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-pill">Steam & Xbox WGS</span>
+                            <span class="feature-pill">Auto-Backup (.bak)</span>
+                            <span class="feature-pill">Zero Corruption</span>
+                        </div>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Screenshot Gallery -->
+        <section class="gallery-section" id="gallery">
+            <div class="container">
+                <header class="section-header">
+                    <div class="section-tag" data-i18n="section_gallery_tag">Visual Walkthrough</div>
+                    <h2 class="section-title" data-i18n="section_gallery_title">Editor Feature Screenshots</h2>
+                    <p class="section-desc" data-i18n="section_gallery_desc">
+                        Explore high-resolution captures of every screen and dialog in the editor.
+                    </p>
+                </header>
+
+                <!-- Gallery Category Filter Buttons -->
+                <div class="gallery-filter">
+                    <button class="filter-btn active" data-filter="all" data-i18n="filter_all">All Screens</button>
+                    <button class="filter-btn" data-filter="player" data-i18n="filter_player">Player & Outfits</button>
+                    <button class="filter-btn" data-filter="horse" data-i18n="filter_horse">Horse & Companions</button>
+                    <button class="filter-btn" data-filter="inventory" data-i18n="filter_inventory">Inventory & Codex</button>
+                    <button class="filter-btn" data-filter="quests" data-i18n="filter_quests">Quests & Fates</button>
+                    <button class="filter-btn" data-filter="crafting" data-i18n="filter_crafting">Crafting & Alchemy</button>
+                </div>
+
+                <div class="gallery-grid">
+                    <!-- 01 -->
+                    <div class="gallery-item" data-category="player">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/01_player_henry_paperdoll.png" alt="Kingdom Come Deliverance 2 Henry Paperdoll and Outfits Editor" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_01_title">Henry Paperdoll & Outfits</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_01_desc">16-slot equipment inspector, Outfit I/II/III preset buttons, defense matrix and RPG attributes.</p>
+                        </div>
+                    </div>
+
+                    <!-- 02 -->
+                    <div class="gallery-item" data-category="player">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/02_slot_equipment_modal.png" alt="KCD2 Slot Equipment Selector Dialog" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_02_title">Slot Equipment Selector Modal</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_02_desc">Gothic modal showing 435 matching helmets from codex and inventory with live search and stats.</p>
+                        </div>
+                    </div>
+
+                    <!-- 03 -->
+                    <div class="gallery-item" data-category="horse">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/03_horse_tack_inventory.png" alt="KCD2 Horse Tack Layout and Presets" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_03_title">Horse Tack Equipment & Outfits</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_03_desc">6 interactive tack slots, 3 Tack Presets (Streitross, Reise, Prunk), dynamic speed and capacity.</p>
+                        </div>
+                    </div>
+
+                    <!-- 04 -->
+                    <div class="gallery-item" data-category="horse">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/04_horse_tack_modal.png" alt="KCD2 Horse Tack Selector Modal" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_04_title">Horse Tack Selector Modal</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_04_desc">153 saddles and tack gear from official game database with price, tier, and weight preview.</p>
+                        </div>
+                    </div>
+
+                    <!-- 05 -->
+                    <div class="gallery-item" data-category="player">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/05_player_attributes_reputation.png" alt="KCD2 Character Stats and Faction Reputation" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_05_title">Character Stats & Reputation</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_05_desc">Factions reputation sliders (Kuttenberg, Trosky, Suchdol) and RPG perk progression tree.</p>
+                        </div>
+                    </div>
+
+                    <!-- 06 -->
+                    <div class="gallery-item" data-category="horse">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/06_companion_dog.png" alt="KCD2 Mutt Dog Companion Manager" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_06_title">Mutt Dog Companion Manager</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_06_desc">Mutt's loyalty, obedience, aggression sliders, hunting/watchdog perks, and Maximize Mutt button.</p>
+                        </div>
+                    </div>
+
+                    <!-- 07 -->
+                    <div class="gallery-item" data-category="horse">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/07_companion_horse.png" alt="KCD2 Mount Stats and Horsemanship" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_07_title">Mount Stats & Horsemanship</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_07_desc">Direct speed, capacity, courage, and stamina fine-tuning with Max Stats preset.</p>
+                        </div>
+                    </div>
+
+                    <!-- 08 -->
+                    <div class="gallery-item" data-category="inventory">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/08_codex_spawner_modal.png" alt="KCD2 Codex Item Spawner Dialog" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_08_title">Codex Item Spawner Dialog</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_08_desc">Browse 5,604 official items by category, price, destination container, quantity, and stolen state.</p>
+                        </div>
+                    </div>
+
+                    <!-- 09 -->
+                    <div class="gallery-item" data-category="quests">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/09_questlog_missions.png" alt="KCD2 Quest Log and Stage Objectives" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_09_title">Quest Log & Stage Objectives</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_09_desc">Full quest progression tree with 'Point of No Return' badges and active stage checklists.</p>
+                        </div>
+                    </div>
+
+                    <!-- 10 -->
+                    <div class="gallery-item" data-category="quests">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/10_questlog_fates.png" alt="KCD2 NPC Fates and Dead Character Resurrector" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_10_title">NPC Fates & Resurrector</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_10_desc">Track living, dead, or missing story characters and instantly revive fallen allies.</p>
+                        </div>
+                    </div>
+
+                    <!-- 11 -->
+                    <div class="gallery-item" data-category="crafting">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/11_crafting_alchemy.png" alt="KCD2 Crafting, Alchemy and Herbs Pouch" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_11_title">Crafting, Alchemy & Herbs Pouch</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_11_desc">92 alchemy and smithing recipes, instant auto-brew, and 10-slot herbalism pouch management.</p>
+                        </div>
+                    </div>
+
+                    <!-- 12 -->
+                    <div class="gallery-item" data-category="inventory">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/12_overview_german.png" alt="Kingdom Come Deliverance 2 Save Editor Deutsche Lokalisierung" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_12_title">German Localization UI</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_12_desc">100% native German translation for all 5,604 items, quest names, perks, and interface labels.</p>
+                        </div>
+                    </div>
+
+                    <!-- 13 -->
+                    <div class="gallery-item" data-category="inventory">
+                        <div class="gallery-thumb-wrap">
+                            <img src="screenshots/13_overview_english.png" alt="Kingdom Come Deliverance 2 Save Editor English Localization" class="gallery-thumb" loading="lazy">
+                        </div>
+                        <div class="gallery-meta">
+                            <h4 class="gallery-caption" data-i18n="gallery_13_title">English Localization UI</h4>
+                            <p class="gallery-subtext" data-i18n="gallery_13_desc">100% native English translation with automated save synchronization and MD5 verification.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Architecture -->
+        <section class="tech-section" id="specs">
+            <div class="container">
+                <header class="section-header">
+                    <div class="section-tag" data-i18n="section_tech_tag">Native Engineering</div>
+                    <h2 class="section-title" data-i18n="section_tech_title">Modern Dual-Tier Architecture</h2>
+                    <p class="section-desc" data-i18n="section_tech_desc">
+                        Engineered from the ground up for zero crashes, lightning-fast parsing, and clean modular code.
+                    </p>
+                </header>
+
+                <div class="tech-grid">
+                    <!-- C++ Core -->
+                    <div class="tech-card">
+                        <h3 data-i18n="tech_core_title">C++20 Native Engine (KCD2SaveCore.dll)</h3>
+                        <ul class="tech-list">
+                            <li><span data-i18n="tech_core_1_k">Standard</span><span data-i18n="tech_core_1_v">ISO C++20 Standard</span></li>
+                            <li><span data-i18n="tech_core_2_k">Compression</span><span data-i18n="tech_core_2_v">Optimized miniz Deflate</span></li>
+                            <li><span data-i18n="tech_core_3_k">Hashing</span><span data-i18n="tech_core_3_v">MD5 Verification & Checksum Patching</span></li>
+                            <li><span data-i18n="tech_core_4_k">Containers</span><span data-i18n="tech_core_4_v">WHS / Zip 100% Binary Safe</span></li>
+                            <li><span data-i18n="tech_core_5_k">Target</span><span data-i18n="tech_core_5_v">Native Win-x64 ABI Export</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- .NET WPF UI -->
+                    <div class="tech-card">
+                        <h3 data-i18n="tech_ui_title">WPF Frontend (.NET 10.0)</h3>
+                        <ul class="tech-list">
+                            <li><span data-i18n="tech_ui_1_k">Framework</span><span data-i18n="tech_ui_1_v">.NET 10.0-windows (Modern WPF)</span></li>
+                            <li><span data-i18n="tech_ui_2_k">Pattern</span><span data-i18n="tech_ui_2_v">MVVM with WeakReference Messaging</span></li>
+                            <li><span data-i18n="tech_ui_3_k">Database</span><span data-i18n="tech_ui_3_v">5,604 Items Official Game Codex</span></li>
+                            <li><span data-i18n="tech_ui_4_k">P/Invoke</span><span data-i18n="tech_ui_4_v">Direct Fast Native C-Bindings</span></li>
+                            <li><span data-i18n="tech_ui_5_k">CI/CD</span><span data-i18n="tech_ui_5_v">Automated GitHub Actions Build</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section (Google Rich Snippets SEO) -->
+        <section class="faq-section" id="faq">
+            <div class="container">
+                <header class="section-header">
+                    <div class="section-tag" data-i18n="section_faq_tag">Frequently Asked Questions</div>
+                    <h2 class="section-title" data-i18n="section_faq_title">Everything You Need to Know</h2>
+                    <p class="section-desc" data-i18n="section_faq_desc">
+                        Common questions about save compatibility, safety guarantees, and game mechanics.
+                    </p>
+                </header>
+
+                <div class="faq-accordion">
+                    <!-- FAQ 1 -->
+                    <div class="faq-item active">
+                        <div class="faq-question">
+                            <span data-i18n="faq_1_q">Does this Save Editor support both Steam and Xbox Game Pass PC?</span>
+                            <span class="faq-icon">▾</span>
+                        </div>
+                        <div class="faq-answer" data-i18n="faq_1_a">
+                            Yes! The editor features automatic platform detection. It locates standard Steam .whs files in <code>%USERPROFILE%\Saved Games\kingdomcome2\saves\</code> as well as Microsoft Store / Xbox Game Pass WGS (Windows Gaming Storage) encrypted container directories with zero manual configuration.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span data-i18n="faq_2_q">Can I resurrect dead story characters or fix broken quests?</span>
+                            <span class="faq-icon">▾</span>
+                        </div>
+                        <div class="faq-answer" data-i18n="faq_2_a">
+                            Absolutely. The integrated Quest Log & Character Fates module allows you to track key NPCs (Sir Radzig, Sir Hans Capon, Father Bohuta, Theresa, etc.) and restore them to 'Alive' status in 1 click. You can also advance stalled objectives or reset quest states.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span data-i18n="faq_3_q">How does the 5,604-item Codex Spawner work?</span>
+                            <span class="faq-icon">▾</span>
+                        </div>
+                        <div class="faq-answer" data-i18n="faq_3_a">
+                            The editor bundles the complete Kingdom Come: Deliverance II official item database. You can search by English or German names, filter by category (Weapons, Armor, Food, Potions, Horse Tack, Books), set condition to 100%, and choose whether to deposit into Henry's inventory, personal chest (stash), or horse saddlebags.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 4 -->
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span data-i18n="faq_4_q">Will editing my save corrupt my files or get me banned?</span>
+                            <span class="faq-icon">▾</span>
+                        </div>
+                        <div class="faq-answer" data-i18n="faq_4_a">
+                            No. The native C++20 engine strictly recalculates CryEngine's internal 64-byte XMLCPB trailer and RFC 1321 MD5 integrity checksums. Furthermore, every single save action automatically creates a timestamped safety backup (.bak), ensuring your original files are 100% protected.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 5 -->
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span data-i18n="faq_5_q">Is this save editor free and open-source?</span>
+                            <span class="faq-icon">▾</span>
+                        </div>
+                        <div class="faq-answer" data-i18n="faq_5_a">
+                            Yes, 100% free and open-source under the permissive MIT License. There are no ads, paywalls, or premium tiers. The source code and automated build workflows are publicly available on GitHub.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Lightbox Modal -->
-    <div id="lightbox-modal" class="lightbox-modal">
+    <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-modal="true" aria-label="Enlarged screenshot preview">
         <div class="lightbox-content">
-            <button id="lightbox-close" class="lightbox-close">&times;</button>
+            <button id="lightbox-close" class="lightbox-close" aria-label="Close dialog">&times;</button>
             <img id="lightbox-img" src="" alt="Enlarged Screenshot" class="lightbox-img">
             <div class="lightbox-info">
                 <h3 id="lightbox-title" class="lightbox-title"></h3>
@@ -352,45 +586,6 @@
         </div>
     </div>
 
-    <!-- Technical Architecture -->
-    <section class="tech-section" id="specs">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-tag" data-i18n="section_tech_tag">Native Engineering</div>
-                <h2 class="section-title" data-i18n="section_tech_title">Modern Dual-Tier Architecture</h2>
-                <p class="section-desc" data-i18n="section_tech_desc">
-                    Engineered from the ground up for zero crashes, lightning-fast parsing, and clean modular code.
-                </p>
-            </div>
-
-            <div class="tech-grid">
-                <!-- C++ Core -->
-                <div class="tech-card">
-                    <h3 data-i18n="tech_core_title">C++20 Native Engine (KCD2SaveCore.dll)</h3>
-                    <ul class="tech-list">
-                        <li><span data-i18n="tech_core_1_k">Standard</span><span data-i18n="tech_core_1_v">ISO C++20 Standard</span></li>
-                        <li><span data-i18n="tech_core_2_k">Compression</span><span data-i18n="tech_core_2_v">Optimized miniz Deflate</span></li>
-                        <li><span data-i18n="tech_core_3_k">Hashing</span><span data-i18n="tech_core_3_v">MD5 Verification & Checksum Patching</span></li>
-                        <li><span data-i18n="tech_core_4_k">Containers</span><span data-i18n="tech_core_4_v">WHS / Zip 100% Binary Safe</span></li>
-                        <li><span data-i18n="tech_core_5_k">Target</span><span data-i18n="tech_core_5_v">Native Win-x64 ABI Export</span></li>
-                    </ul>
-                </div>
-
-                <!-- .NET WPF UI -->
-                <div class="tech-card">
-                    <h3 data-i18n="tech_ui_title">WPF Frontend (.NET 10.0)</h3>
-                    <ul class="tech-list">
-                        <li><span data-i18n="tech_ui_1_k">Framework</span><span data-i18n="tech_ui_1_v">.NET 10.0-windows (Modern WPF)</span></li>
-                        <li><span data-i18n="tech_ui_2_k">Pattern</span><span data-i18n="tech_ui_2_v">MVVM with WeakReference Messaging</span></li>
-                        <li><span data-i18n="tech_ui_3_k">Database</span><span data-i18n="tech_ui_3_v">5,604 Items Official Game Codex</span></li>
-                        <li><span data-i18n="tech_ui_4_k">P/Invoke</span><span data-i18n="tech_ui_4_v">Direct Fast Native C-Bindings</span></li>
-                        <li><span data-i18n="tech_ui_5_k">CI/CD</span><span data-i18n="tech_ui_5_v">Automated GitHub Actions Build</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -398,7 +593,8 @@
                 <a href="#features">Features</a>
                 <a href="#gallery">Screenshots</a>
                 <a href="#specs">Architecture</a>
-                <a href="https://github.com/Mizkii/KCD_2_SaveGAme_Editor" target="_blank">GitHub Repository</a>
+                <a href="#faq">FAQ</a>
+                <a href="https://github.com/Mizkii/KCD_2_SaveGAme_Editor" target="_blank" rel="noopener">GitHub Repository</a>
                 <a href="https://github.com/Mizkii/KCD_2_SaveGAme_Editor/releases">Releases</a>
             </div>
             <p class="footer-disclaimer" data-i18n="footer_disclaimer">

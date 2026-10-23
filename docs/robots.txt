@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mizkii.github.io/KCD_2_SaveGAme_Editor/sitemap.xml

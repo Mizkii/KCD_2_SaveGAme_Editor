@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/</loc>
+    <lastmod>2026-10-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/01_player_henry_paperdoll.png</image:loc>
+      <image:title>Kingdom Come Deliverance 2 Save Editor — Henry Paperdoll and Outfits</image:title>
+      <image:caption>16-slot layered equipment inspector and dynamic defense matrix for Kingdom Come: Deliverance II.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/02_slot_equipment_modal.png</image:loc>
+      <image:title>KCD2 Save Editor — Slot Equipment Selector Modal</image:title>
+      <image:caption>Gothic equipment picker modal filtering through inventory and official game database.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/03_horse_tack_inventory.png</image:loc>
+      <image:title>KCD2 Save Editor — Horse Tack Layout and Presets</image:title>
+      <image:caption>6 interactive horse tack slots and 3 Tack Outfit Presets for Pebbles and mounts.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/04_horse_tack_modal.png</image:loc>
+      <image:title>KCD2 Save Editor — Horse Tack Selector Modal</image:title>
+      <image:caption>Browse saddles and mount equipment from official KCD2 codex.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/05_player_attributes_reputation.png</image:loc>
+      <image:title>KCD2 Save Editor — RPG Attributes and Faction Reputation</image:title>
+      <image:caption>Edit Henry's Strength, Agility, Vitality, Speech, and region reputations.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/06_companion_dog.png</image:loc>
+      <image:title>KCD2 Save Editor — Mutt Dog Companion Manager</image:title>
+      <image:caption>Manage dog loyalty, obedience, aggression, and houndmaster perks.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/07_companion_horse.png</image:loc>
+      <image:title>KCD2 Save Editor — Horse Stats and Horsemanship</image:title>
+      <image:caption>Fine-tune mount speed, carry capacity, courage, and stamina.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/08_codex_spawner_modal.png</image:loc>
+      <image:title>KCD2 Save Editor — 5604 Item Codex Spawner Dialog</image:title>
+      <image:caption>Item spawner with bilingual database, search, and container targeting.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/09_questlog_missions.png</image:loc>
+      <image:title>KCD2 Save Editor — Questlog Missions and Objectives</image:title>
+      <image:caption>Edit quest stages, complete objectives, and track Point of No Return milestones.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/10_questlog_fates.png</image:loc>
+      <image:title>KCD2 Save Editor — NPC Fates and Dead Character Resurrector</image:title>
+      <image:caption>Revive dead NPCs like Sir Radzig, Sir Hans Capon, and track character fates.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/11_crafting_alchemy.png</image:loc>
+      <image:title>KCD2 Save Editor — Herbalism and Alchemy Autobrew</image:title>
+      <image:caption>10-slot herbs pouch editor, master blacksmithing 100%, and 92 alchemy recipes.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/12_overview_german.png</image:loc>
+      <image:title>Kingdom Come Deliverance 2 Spielstand Editor — Deutsche Lokalisierung</image:title>
+      <image:caption>Vollständige deutsche Benutzeroberfläche für KCD2 Spielstände.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mizkii.github.io/KCD_2_SaveGAme_Editor/screenshots/13_overview_english.png</image:loc>
+      <image:title>Kingdom Come Deliverance 2 Save Editor — English UI Overview</image:title>
+      <image:caption>Native English UI with automated Steam and Xbox Game Pass save discovery.</image:caption>
+    </image:image>
+  </url>
+</urlset>

@@ -8,6 +8,7 @@ const TRANSLATIONS = {
         nav_features: "Features",
         nav_gallery: "Screenshots",
         nav_specs: "Architecture",
+        nav_faq: "FAQ",
         nav_github: "View on GitHub",
         nav_download: "Download v2.5.0",
         
@@ -112,12 +113,32 @@ const TRANSLATIONS = {
         tech_ui_4_k: "P/Invoke", tech_ui_4_v: "Direct Fast Native C-Bindings",
         tech_ui_5_k: "CI/CD", tech_ui_5_v: "Automated GitHub Actions Build",
         
+        section_faq_tag: "Frequently Asked Questions",
+        section_faq_title: "Everything You Need to Know",
+        section_faq_desc: "Common questions about save compatibility, safety guarantees, and game mechanics.",
+        
+        faq_1_q: "Does this Save Editor support both Steam and Xbox Game Pass PC?",
+        faq_1_a: "Yes! The editor features automatic platform detection. It locates standard Steam .whs files in <code>%USERPROFILE%\\Saved Games\\kingdomcome2\\saves\\</code> as well as Microsoft Store / Xbox Game Pass WGS (Windows Gaming Storage) encrypted container directories with zero manual configuration.",
+        
+        faq_2_q: "Can I resurrect dead story characters or fix broken quests?",
+        faq_2_a: "Absolutely. The integrated Quest Log & Character Fates module allows you to track key NPCs (Sir Radzig, Sir Hans Capon, Father Bohuta, Theresa, etc.) and restore them to 'Alive' status in 1 click. You can also advance stalled objectives or reset quest states.",
+        
+        faq_3_q: "How does the 5,604-item Codex Spawner work?",
+        faq_3_a: "The editor bundles the complete Kingdom Come: Deliverance II official item database. You can search by English or German names, filter by category (Weapons, Armor, Food, Potions, Horse Tack, Books), set condition to 100%, and choose whether to deposit into Henry's inventory, personal chest (stash), or horse saddlebags.",
+        
+        faq_4_q: "Will editing my save corrupt my files or get me banned?",
+        faq_4_a: "No. The native C++20 engine strictly recalculates CryEngine's internal 64-byte XMLCPB trailer and RFC 1321 MD5 integrity checksums. Furthermore, every single save action automatically creates a timestamped safety backup (.bak), ensuring your original files are 100% protected.",
+        
+        faq_5_q: "Is this save editor free and open-source?",
+        faq_5_a: "Yes, 100% free and open-source under the permissive MIT License. There are no ads, paywalls, or premium tiers. The source code and automated build workflows are publicly available on GitHub.",
+        
         footer_disclaimer: "Kingdom Come: Deliverance II is a registered trademark of Warhorse Studios and PLAION. This open-source save game editor is an independent community project and is not affiliated with or endorsed by Warhorse Studios."
     },
     de: {
         nav_features: "Funktionen",
         nav_gallery: "Screenshots",
         nav_specs: "Architektur",
+        nav_faq: "FAQ",
         nav_github: "GitHub Repository",
         nav_download: "v2.5.0 Herunterladen",
         
@@ -222,6 +243,25 @@ const TRANSLATIONS = {
         tech_ui_4_k: "P/Invoke", tech_ui_4_v: "Direkte Native C-Bindings",
         tech_ui_5_k: "CI/CD", tech_ui_5_v: "Automatisierter GitHub Actions Build",
         
+        section_faq_tag: "Häufig gestellte Fragen",
+        section_faq_title: "Alles was du wissen musst",
+        section_faq_desc: "Wichtige Antworten zu Kompatibilität, Ausfallsicherheit und Funktionen.",
+        
+        faq_1_q: "Unterstützt dieser Save Editor sowohl Steam als auch Xbox Game Pass PC?",
+        faq_1_a: "Ja! Der Editor verfügt über eine automatische Plattform-Erkennung. Er findet Standard Steam .whs Dateien in <code>%USERPROFILE%\\Saved Games\\kingdomcome2\\saves\\</code> sowie Microsoft Store / Xbox Game Pass WGS Container-Ordner vollautomatisch.",
+        
+        faq_2_q: "Kann ich tote NPCs wiederbeleben oder fehlerhafte Quests reparieren?",
+        faq_2_a: "Absolut. Das integrierte Questlog- und Schicksale-Modul ermöglicht es, wichtige Story-Charaktere (Herr Radzig, Hans Capon, Pater Bohuta, Theresa etc.) mit einem Klick auf 'Lebendig' zurückzusetzen und blockierte Missionsziele fortzusetzen.",
+        
+        faq_3_q: "Wie funktioniert der 5.604-Items Codex Spawner?",
+        faq_3_a: "Der Editor enthält die vollständige offizielle Spieledatenbank. Du kannst nach deutschen oder englischen Begriffen suchen, nach Kategorien filtern, 100% Haltbarkeit einstellen und Gegenstände direkt in Heinrichs Inventar, die Truhe oder Satteltaschen einfügen.",
+        
+        faq_4_q: "Können Spielstände beschädigt werden oder droht ein Bann?",
+        faq_4_a: "Nein. Die native C++20 Engine berechnet die internen CryEngine 64-Byte XMLCPB Trailer und MD5 Prüfsummen exakt neu. Zudem erstellt jeder Speichervorgang automatisch ein zeitgestempeltes Backup (.bak).",
+        
+        faq_5_q: "Ist der KCD2 Save Editor wirklich kostenlos und quelloffen?",
+        faq_5_a: "Ja, zu 100% kostenlos und Open-Source unter der MIT-Lizenz. Es gibt keinerlei Werbung, Paywalls oder Abos. Der Quellcode ist vollständig auf GitHub einsehbar.",
+        
         footer_disclaimer: "Kingdom Come: Deliverance II ist ein eingetragenes Markenzeichen von Warhorse Studios und PLAION. Dieser Open-Source Savegame-Editor ist ein unabhängiges Community-Projekt und steht in keiner offiziellen Verbindung zu Warhorse Studios."
     }
 };
@@ -310,10 +350,28 @@ function initLightbox() {
     });
 }
 
+// FAQ Accordion Logic
+function initFaqAccordion() {
+    document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            const wasActive = item.classList.contains('active');
+            
+            // Close others
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            
+            if (!wasActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+}
+
 // Initialize on DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
     initGalleryFilters();
     initLightbox();
+    initFaqAccordion();
     setLanguage('en');
     
     const langBtn = document.getElementById('lang-switch-btn');
