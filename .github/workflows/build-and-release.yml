@@ -78,7 +78,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          name: Kingdom Come: Deliverance II Save Editor ${{ github.ref_name }}
+          name: "Kingdom Come: Deliverance II Save Editor ${{ github.ref_name }}"
           files: |
             ${{ env.ZIP_NAME }}
             ${{ env.ZIP_NAME }}.sha256
