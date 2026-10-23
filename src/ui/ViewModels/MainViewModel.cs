@@ -924,6 +924,10 @@ namespace KCD2SaveEditor.UI.ViewModels
 
 
 
+            AddCustomDlcCommand = new RelayCommand(AddCustomDlc, () => IsSaveLoaded);
+
+
+
 
 
 
@@ -4085,13 +4089,35 @@ namespace KCD2SaveEditor.UI.ViewModels
 
         public string Loc_DlcTitle => GameDataService.Instance.GetUiText("Dlcs", "DLC-MANAGER (MANIFEST STRIPPING)", "DLC MANAGER (MANIFEST STRIPPING)");
 
-
+        public string Loc_DlcSubtitle => GameDataService.Instance.GetUiText("DlcSubtitle",
+            "Verwalte DLC-Abhängigkeiten im Spielstand-Manifest. Deaktiviere DLCs ('Manifest-Stripping'), damit Spieler ohne diese DLCs deinen Spielstand problemlos laden können.",
+            "Manage DLC dependencies in the savegame manifest. Disable DLCs ('Manifest Stripping') so players without those DLCs can seamlessly load your savegame.");
 
         public string Loc_EnableAllDlcs => GameDataService.Instance.GetUiText("EnableAllDlcs", "Alle DLCs aktivieren", "Enable All DLCs");
 
+        public string Loc_DisableAllDlcs => GameDataService.Instance.GetUiText("DisableAllDlcs", "Alle DLCs deaktivieren (Manifest strippen)", "Disable All DLCs (Strip Manifest)");
 
+        public string Loc_DlcHelpTitle => GameDataService.Instance.GetUiText("DlcHelpTitle", "Wie funktioniert Manifest-Stripping?", "How does Manifest Stripping work?");
 
-        public string Loc_DisableAllDlcs => GameDataService.Instance.GetUiText("DisableAllDlcs", "Alle DLCs deaktivieren", "Disable All DLCs");
+        public string Loc_DlcHelpDesc => GameDataService.Instance.GetUiText("DlcHelpDesc",
+            "In Kingdom Come: Deliverance II speichert die CryEngine installierte Erweiterungen im internen Manifest des Spielstands. Fehlt einem Spieler eine dieser Erweiterungen, verweigert das Spiel das Laden mit einem Fehler.\n\nDurch das Abwählen einzelner DLCs oder Klick auf 'Alle DLCs deaktivieren' entfernt der Editor die DLC-Verweise sauber aus dem Manifest. Der Spielstand wird damit universal kompatibel für alle Spieler, auch wenn sie nur das Basisspiel besitzen.",
+            "In Kingdom Come: Deliverance II, CryEngine embeds all installed expansions in the savegame manifest XML. If a player lacks any of these expansions, the game rejects loading with a missing DLC error.\n\nBy unchecking individual DLCs or clicking 'Disable All DLCs', the editor cleanly strips the DLC references from the manifest. The savegame becomes universally compatible for all players, even those who only own the base game.");
+
+        public string Loc_DlcHowToTitle => GameDataService.Instance.GetUiText("DlcHowToTitle", "Schritt-für-Schritt Anleitung", "Step-by-Step Instructions");
+
+        public string Loc_DlcStep1 => GameDataService.Instance.GetUiText("DlcStep1", "1. Wähle die gewünschten DLC-Häkchen ab oder klicke auf 'Alle DLCs deaktivieren'.", "1. Uncheck unwanted DLCs or click 'Disable All DLCs'.");
+
+        public string Loc_DlcStep2 => GameDataService.Instance.GetUiText("DlcStep2", "2. Klicke oben rechts auf 'Speichern & Signieren' (oder Schnellspeichern).", "2. Click 'Save & Sign' in the top right (or Quick Save).");
+
+        public string Loc_DlcStep3 => GameDataService.Instance.GetUiText("DlcStep3", "3. Gib die .whs-Datei an Freunde weiter – sie lädt ohne DLC-Fehler auf jeder Installation!", "3. Share the .whs file with friends – it loads cleanly on any base installation!");
+
+        public string Loc_DlcCustomAddTitle => GameDataService.Instance.GetUiText("DlcCustomAddTitle", "Eigenes DLC / Mod-Erweiterungs-ID hinzufügen", "Add Custom DLC / Mod Expansion ID");
+
+        public string Loc_DlcCustomAddBtn => GameDataService.Instance.GetUiText("DlcCustomAddBtn", "+ DLC hinzufügen", "+ Add DLC");
+
+        public string Loc_DlcCustomPlaceholder => GameDataService.Instance.GetUiText("DlcCustomPlaceholder", "DLC-ID eingeben (z. B. DLC_Exp1)...", "Enter DLC ID (e.g. DLC_Exp1)...");
+
+        public string Loc_DlcActiveCountText => string.Format(GameDataService.Instance.GetUiText("DlcActiveCount", "{0} von {1} DLCs aktiv", "{0} of {1} DLCs active"), AvailableDlcs.Count(d => d.IsEnabled), AvailableDlcs.Count);
 
 
 
@@ -4248,6 +4274,8 @@ namespace KCD2SaveEditor.UI.ViewModels
 
 
         public string Loc_NavHandwerk => GameDataService.Instance.GetUiText("Nav_Handwerk", "HANDWERKSKUNST", "CRAFTSMANSHIP");
+
+        public string Loc_NavDlcs => GameDataService.Instance.GetUiText("Nav_Dlcs", "DLCs", "DLCs");
 
 
 
@@ -4913,6 +4941,19 @@ namespace KCD2SaveEditor.UI.ViewModels
 
 
             OnPropertyChanged(nameof(Loc_NavHandwerk));
+
+            OnPropertyChanged(nameof(Loc_NavDlcs));
+            OnPropertyChanged(nameof(Loc_DlcSubtitle));
+            OnPropertyChanged(nameof(Loc_DlcHelpTitle));
+            OnPropertyChanged(nameof(Loc_DlcHelpDesc));
+            OnPropertyChanged(nameof(Loc_DlcHowToTitle));
+            OnPropertyChanged(nameof(Loc_DlcStep1));
+            OnPropertyChanged(nameof(Loc_DlcStep2));
+            OnPropertyChanged(nameof(Loc_DlcStep3));
+            OnPropertyChanged(nameof(Loc_DlcCustomAddTitle));
+            OnPropertyChanged(nameof(Loc_DlcCustomAddBtn));
+            OnPropertyChanged(nameof(Loc_DlcCustomPlaceholder));
+            OnPropertyChanged(nameof(Loc_DlcActiveCountText));
 
 
 
@@ -8853,6 +8894,15 @@ namespace KCD2SaveEditor.UI.ViewModels
 
 
         public ICommand DisableAllDlcsCommand { get; }
+
+        public ICommand AddCustomDlcCommand { get; }
+
+        private string _customDlcId = string.Empty;
+        public string CustomDlcId
+        {
+            get => _customDlcId;
+            set => SetProperty(ref _customDlcId, value);
+        }
 
 
 
@@ -13005,82 +13055,30 @@ namespace KCD2SaveEditor.UI.ViewModels
 
 
             var knownDlcs = new (string Id, string NameDe, string NameEn, string DescDe, string DescEn)[]
-
-
-
             {
-
-
-
-                ("QuestForValor", "Das Wappen des Löwen (Quest for Valor)", "The Lion's Crest (Quest for Valor)", "Bonus-Questreihe & legendäre Rüstung des Ritters Brunclík", "Bonus questline & legendary armor set of the Knight Brunclík"),
-
-
-
+                ("QuestForValor", "Das Wappen des Löwen (Quest for Valor)", "The Lion's Crest (Quest for Valor)", "Bonus-Questreihe, Brunclík-Rüstungsset, Waffen & Pferdeschabracke", "Bonus questline, Knight Brunclík armor set, weapons & horse caparison"),
                 ("SeasonPassShields", "Schilde der Jahreszeiten", "Shields of Seasons Passing", "Vier einzigartige Schilde mit saisonaler Heraldik (Frühling, Sommer, Herbst, Winter)", "Four unique seasonal shield heraldries (Spring, Summer, Autumn, Winter)"),
-
-
-
-                ("GoldEditionHuntsman", "Galantes Jäger-Set", "Gallant Huntsman's Kit", "St.-Hubertus-Jagdmütze, Meister-Armbrust & Nimrod-Jagdgewand", "St. Hubert hunting cap, Master crossbow, & Nimrod hunting coat")
-
-
-
+                ("GoldEditionHuntsman", "Galantes Jäger-Set", "Gallant Huntsman's Kit", "St.-Hubertus-Jagdmütze, Meister-Armbrust & Nimrod-Jagdgewand", "St. Hubert hunting cap, Master crossbow, & Nimrod hunting coat"),
+                ("BrushesWithDeath", "Pinsel mit dem Tod (Brushes with Death)", "Brushes with Death", "Story-Erweiterung 1: Eine geheimnisvolle Verschwörung im böhmischen Umland", "Story Expansion 1: A mysterious intrigue across Bohemian countryside"),
+                ("LegacyOfTheForge", "Das Erbe der Schmiede (Legacy of the Forge)", "Legacy of the Forge", "Story-Erweiterung 2: Heinrichs Meisterprüfung und legendäre Meisterschmiedekunst", "Story Expansion 2: Henry's master trials and legendary master blacksmithing"),
+                ("MysteriaEcclesiae", "Geheimnisse der Kirche (Mysteria Ecclesiae)", "Mysteria Ecclesiae", "Story-Erweiterung 3: Schattenhafte Mysterien in den Klöstern von Sedlec und Sasau", "Story Expansion 3: Shadowy mysteries within Sedlec and Sasau monasteries")
             };
 
-
-
-
-
-
-
             foreach (var (id, nameDe, nameEn, descDe, descEn) in knownDlcs)
-
-
-
             {
-
-
-
                 bool isEnabled = declaredDlcs.Contains(id);
-
-
-
                 var item = new DlcItemViewModel(id, nameDe, nameEn, descDe, descEn, isEnabled, UpdateManifestDlcs);
-
-
-
                 AvailableDlcs.Add(item);
-
-
-
                 declaredDlcs.Remove(id);
-
-
-
             }
-
-
-
-
-
-
 
             foreach (var id in declaredDlcs)
-
-
-
             {
-
-
-
                 var item = new DlcItemViewModel(id, id, id, "Erweiterungspaket / Zusätzlicher Inhalt", "Expansion / Additional content package", true, UpdateManifestDlcs);
-
-
-
                 AvailableDlcs.Add(item);
-
-
-
             }
+
+            OnPropertyChanged(nameof(Loc_DlcActiveCountText));
 
 
 
@@ -13265,21 +13263,30 @@ namespace KCD2SaveEditor.UI.ViewModels
 
 
             NativeMethods.kcd2_save_set_manifest_xml(_handle, updatedXml);
-
-
+            IsDirty = true;
+            OnPropertyChanged(nameof(Loc_DlcActiveCountText));
 
             StatusMessage = IsGerman
-
-
-
                 ? $"DLC-Anforderungen aktualisiert ({activeIds.Count} aktiv). Klicke auf 'Speichern & Signieren'."
-
-
-
                 : $"Updated DLC requirements ({activeIds.Count} active). Click 'Save & Sign' to write.";
+        }
 
-
-
+        private void AddCustomDlc()
+        {
+            if (string.IsNullOrWhiteSpace(CustomDlcId)) return;
+            string id = CustomDlcId.Trim();
+            var existing = AvailableDlcs.FirstOrDefault(x => x.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
+            if (existing != null)
+            {
+                existing.IsEnabled = true;
+            }
+            else
+            {
+                var item = new DlcItemViewModel(id, id, id, "Benutzerdefiniertes Erweiterungspaket / Mod-DLC", "Custom Expansion Package / Mod DLC", true, UpdateManifestDlcs);
+                AvailableDlcs.Add(item);
+            }
+            CustomDlcId = string.Empty;
+            UpdateManifestDlcs();
         }
 
 

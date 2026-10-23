@@ -69,10 +69,10 @@ namespace KCD2SaveEditor.UI.Services
         {
             if (string.IsNullOrWhiteSpace(dir) || !Directory.Exists(dir)) return false;
 
-            // Direct check: Localization folder or Data\Tables.pak or KingdomCome.exe
+            // Direct check: Localization folder or Data\Tables.pak
             if (Directory.Exists(Path.Combine(dir, "Localization")) ||
                 File.Exists(Path.Combine(dir, "Data", "Tables.pak")) ||
-                File.Exists(Path.Combine(dir, "KingdomCome.exe")))
+                Directory.Exists(Path.Combine(dir, "Data")))
             {
                 return true;
             }
@@ -81,42 +81,93 @@ namespace KCD2SaveEditor.UI.Services
             string contentSub = Path.Combine(dir, "Content");
             if (Directory.Exists(contentSub) &&
                 (Directory.Exists(Path.Combine(contentSub, "Localization")) ||
-                 File.Exists(Path.Combine(contentSub, "KingdomCome.exe"))))
+                 File.Exists(Path.Combine(contentSub, "Data", "Tables.pak")) ||
+                 Directory.Exists(Path.Combine(contentSub, "Data"))))
             {
                 return true;
             }
 
+            // Check if KingdomCome.exe is located here and parent has Localization
+            string exe = FindGameExe(dir);
+            if (!string.IsNullOrEmpty(exe))
+            {
+                string resolved = ResolveGameDirectory(exe);
+                if (!string.IsNullOrEmpty(resolved) && Directory.Exists(Path.Combine(resolved, "Localization")))
+                {
+                    return true;
+                }
+            }
+
             return false;
+        }
+
+        public static string FindGameExe(string gameDir)
+        {
+            if (string.IsNullOrWhiteSpace(gameDir) || !Directory.Exists(gameDir)) return string.Empty;
+
+            // 1. Steam specific structure: Bin\Win64MasterMasterSteamPGO\KingdomCome.exe
+            string steamPgoExe = Path.Combine(gameDir, "Bin", "Win64MasterMasterSteamPGO", "KingdomCome.exe");
+            if (File.Exists(steamPgoExe)) return steamPgoExe;
+
+            // 2. Alternative Steam/GOG/Epic optimized builds
+            string steamOptExe = Path.Combine(gameDir, "Bin", "Win64MasterMasterPCOptimized", "KingdomCome.exe");
+            if (File.Exists(steamOptExe)) return steamOptExe;
+
+            string win64Exe = Path.Combine(gameDir, "Bin", "Win64", "KingdomCome.exe");
+            if (File.Exists(win64Exe)) return win64Exe;
+
+            // 3. Direct root (Xbox / standard)
+            string rootExe = Path.Combine(gameDir, "KingdomCome.exe");
+            if (File.Exists(rootExe)) return rootExe;
+
+            // 4. Content subfolder (Xbox root)
+            string contentExe = Path.Combine(gameDir, "Content", "KingdomCome.exe");
+            if (File.Exists(contentExe)) return contentExe;
+
+            // 5. Search any KingdomCome.exe inside Bin/
+            string binDir = Path.Combine(gameDir, "Bin");
+            if (Directory.Exists(binDir))
+            {
+                try
+                {
+                    var files = Directory.GetFiles(binDir, "KingdomCome.exe", SearchOption.AllDirectories);
+                    if (files.Length > 0) return files[0];
+                }
+                catch { }
+            }
+
+            return string.Empty;
         }
 
         public static string ResolveGameDirectory(string exePath)
         {
             if (string.IsNullOrWhiteSpace(exePath) || !File.Exists(exePath)) return string.Empty;
 
-            string? dir = Path.GetDirectoryName(exePath);
-            if (string.IsNullOrEmpty(dir)) return string.Empty;
-
-            // 1. If dir has Localization folder, it's the game directory
-            if (Directory.Exists(Path.Combine(dir, "Localization")))
+            string? current = Path.GetDirectoryName(exePath);
+            int depth = 0;
+            while (!string.IsNullOrEmpty(current) && depth < 5)
             {
-                return dir;
+                // Check if current directory has Localization or Data
+                if (Directory.Exists(Path.Combine(current, "Localization")) ||
+                    File.Exists(Path.Combine(current, "Data", "Tables.pak")) ||
+                    Directory.Exists(Path.Combine(current, "Data")))
+                {
+                    return current;
+                }
+
+                // Check if Content has Localization (Xbox installation)
+                if (Directory.Exists(Path.Combine(current, "Content", "Localization")))
+                {
+                    return Path.Combine(current, "Content");
+                }
+
+                var parent = Directory.GetParent(current);
+                if (parent == null || parent.FullName == current) break;
+                current = parent.FullName;
+                depth++;
             }
 
-            // 2. If dir has Content\Localization (e.g., Xbox installation root)
-            if (Directory.Exists(Path.Combine(dir, "Content", "Localization")))
-            {
-                return Path.Combine(dir, "Content");
-            }
-
-            // 3. If parent has Localization folder (e.g., exe in Bin\Win64MasterMasterPCOptimized)
-            string? parent = Path.GetDirectoryName(dir);
-            if (!string.IsNullOrEmpty(parent) && Directory.Exists(Path.Combine(parent, "Localization")))
-            {
-                return parent;
-            }
-
-            // 4. Fallback to exe folder
-            return dir;
+            return Path.GetDirectoryName(exePath) ?? string.Empty;
         }
     }
 }

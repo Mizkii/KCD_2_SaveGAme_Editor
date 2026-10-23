@@ -1173,6 +1173,24 @@
 
         </Style>
 
+        <Style x:Key="NavTabDlcsStyle" TargetType="Button" BasedOn="{StaticResource MainNavTabButton}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedMainTab}" Value="DLCs">
+                    <Setter Property="Foreground" Value="#F6E05E"/>
+                    <Setter Property="BorderBrush" Value="#C9A24D"/>
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#35C9A24D" Offset="0"/>
+                                <GradientStop Color="#08C9A24D" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+
 
 
         <!-- Target Switcher Styles (Heinrich vs Pebbles) -->
@@ -2770,6 +2788,14 @@
                     </StackPanel>
 
                 </Button>
+
+                <Button Command="{Binding SwitchMainTabCommand}" CommandParameter="DLCs" Style="{StaticResource NavTabDlcsStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="💎" FontSize="13" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Loc_NavDlcs}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
 
             </StackPanel>
 
@@ -7177,6 +7203,197 @@
                 </Border>
 
             </Grid>
+
+            <!-- ================================================================= -->
+            <!-- TAB 5: DLC-MANAGER (MANIFEST STRIPPING)                           -->
+            <!-- ================================================================= -->
+            <Grid Visibility="{Binding SelectedMainTab, Converter={StaticResource EqToVis}, ConverterParameter='DLCs'}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="7*" MinWidth="600"/>
+                    <ColumnDefinition Width="10"/> <!-- Spacer -->
+                    <ColumnDefinition Width="5*" MinWidth="440"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- ============================================================= -->
+                <!-- LEFT PANEL: DLC CHECKBOX LIST & QUICK ACTIONS                 -->
+                <!-- ============================================================= -->
+                <Border Grid.Column="0" Background="#12151C" BorderBrush="#352F22" BorderThickness="1" CornerRadius="10" Padding="14">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/> <!-- Header Title & Actions -->
+                            <RowDefinition Height="Auto"/> <!-- Subtitle / Description -->
+                            <RowDefinition Height="Auto"/> <!-- Active Count Bar -->
+                            <RowDefinition Height="*"/>    <!-- Scrollable DLC Items List -->
+                            <RowDefinition Height="Auto"/> <!-- Custom DLC Adder Bar -->
+                        </Grid.RowDefinitions>
+
+                        <!-- Row 0: Header with Title & Action Buttons -->
+                        <Grid Grid.Row="0" Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="💎" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Loc_DlcTitle}" FontSize="13" FontWeight="Bold" Foreground="#F6E05E" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Content="{Binding Loc_EnableAllDlcs}" Command="{Binding EnableAllDlcsCommand}"
+                                        Style="{StaticResource DarkUtilityButton}" Foreground="#86EFAC" BorderBrush="#4010B981" Background="#2010B981"
+                                        Padding="10,5" FontSize="11" Margin="0,0,8,0"/>
+
+                                <Button Content="{Binding Loc_DisableAllDlcs}" Command="{Binding DisableAllDlcsCommand}"
+                                        Style="{StaticResource DarkUtilityButton}" Foreground="#FCA5A5" BorderBrush="#40EF4444" Background="#20EF4444"
+                                        Padding="10,5" FontSize="11"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Row 1: Subtitle / Explanation -->
+                        <TextBlock Grid.Row="1" Text="{Binding Loc_DlcSubtitle}" FontSize="11" Foreground="#94A3B8" TextWrapping="Wrap" Margin="0,0,0,12"/>
+
+                        <!-- Row 2: Status Banner (Active Count & Manifest State) -->
+                        <Border Grid.Row="2" Background="#161C28" BorderBrush="#30C9A24D" BorderThickness="1" CornerRadius="6" Padding="12,8" Margin="0,0,0,12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="🛡️ " FontSize="12" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Loc_DlcActiveCountText}" FontSize="11" FontWeight="Bold" Foreground="#E2E8F0" VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <Border Grid.Column="1" Background="#20C9A24D" BorderBrush="#60C9A24D" BorderThickness="1" CornerRadius="4" Padding="8,2">
+                                    <TextBlock Text="MANIFEST STRIPPING READY" FontSize="9" FontWeight="Bold" Foreground="#FCD34D" FontFamily="Consolas"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- Row 3: Items List -->
+                        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding AvailableDlcs}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type vm:DlcItemViewModel}">
+                                        <Border Background="{Binding CardBackgroundBrush}" BorderBrush="{Binding CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,0,0,8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/> <!-- CheckBox -->
+                                                    <ColumnDefinition Width="Auto"/> <!-- Icon -->
+                                                    <ColumnDefinition Width="*"/>    <!-- Text & Details -->
+                                                    <ColumnDefinition Width="Auto"/> <!-- Status Badge -->
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- CheckBox bound to IsEnabled -->
+                                                <CheckBox Grid.Column="0" Style="{StaticResource CodexCheckBox}" IsChecked="{Binding IsEnabled, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+
+                                                <!-- DLC Icon -->
+                                                <TextBlock Grid.Column="1" Text="{Binding Icon}" FontSize="22" VerticalAlignment="Center" Margin="6,0,12,0"/>
+
+                                                <!-- Info (Name, Id badge, Description) -->
+                                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding DisplayName}" FontSize="12" FontWeight="Bold" Foreground="#F6E05E" VerticalAlignment="Center"/>
+                                                        <Border Background="#1C2333" BorderBrush="#35FFFFFF" BorderThickness="1" CornerRadius="3" Padding="5,1" Margin="8,0,0,0" VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding IdBadge}" FontSize="9" FontWeight="SemiBold" Foreground="#94A3B8" FontFamily="Consolas"/>
+                                                        </Border>
+                                                    </StackPanel>
+                                                    <TextBlock Text="{Binding Description}" FontSize="11" Foreground="#94A3B8" TextWrapping="Wrap" Margin="0,3,0,0"/>
+                                                </StackPanel>
+
+                                                <!-- Status Badge (Green / Slate) -->
+                                                <Border Grid.Column="3" Background="{Binding StatusBadgeBgBrush}" BorderBrush="{Binding StatusBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="10,4" VerticalAlignment="Center" Margin="8,0,0,0">
+                                                    <TextBlock Text="{Binding StatusBadgeText}" FontSize="10" FontWeight="Bold" Foreground="{Binding StatusBadgeBrush}"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <!-- Row 4: Custom DLC ID Adder -->
+                        <Border Grid.Row="4" Background="#0E121A" BorderBrush="#25FFFFFF" BorderThickness="1" CornerRadius="8" Padding="10,8" Margin="0,10,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="{Binding Loc_DlcCustomAddTitle}" FontSize="11" FontWeight="SemiBold" Foreground="#94A3B8" VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                                <TextBox Grid.Column="1" Text="{Binding CustomDlcId, UpdateSourceTrigger=PropertyChanged}" Background="#161B26" Foreground="#FFFFFF" BorderBrush="#35C9A24D" BorderThickness="1" Padding="8,5" FontSize="11" VerticalContentAlignment="Center" Margin="0,0,10,0"/>
+
+                                <Button Grid.Column="2" Content="{Binding Loc_DlcCustomAddBtn}" Command="{Binding AddCustomDlcCommand}" Style="{StaticResource GoldButton}" Padding="10,5" FontSize="11" FontWeight="Bold"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- ============================================================= -->
+                <!-- RIGHT PANEL: MANIFEST STRIPPING GUIDE & TECHNICAL INFO        -->
+                <!-- ============================================================= -->
+                <Border Grid.Column="2" Background="#12151C" BorderBrush="#352F22" BorderThickness="1" CornerRadius="10" Padding="14">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <!-- Info Card 1: What is Manifest Stripping? -->
+                            <Border Background="#161C28" BorderBrush="#40C9A24D" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="💡 " FontSize="14" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Loc_DlcHelpTitle}" FontSize="12" FontWeight="Bold" Foreground="#F6E05E" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Loc_DlcHelpDesc}" FontSize="11" Foreground="#CBD5E1" TextWrapping="Wrap" LineHeight="16"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Info Card 2: Step-by-Step Instructions -->
+                            <Border Background="#141824" BorderBrush="#25FFFFFF" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <TextBlock Text="📋 " FontSize="14" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Loc_DlcHowToTitle}" FontSize="12" FontWeight="Bold" Foreground="#E2E8F0" VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <!-- Step 1 -->
+                                    <Border Background="#0E121A" BorderBrush="#20FFFFFF" BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="0,0,0,6">
+                                        <TextBlock Text="{Binding Loc_DlcStep1}" FontSize="11" Foreground="#94A3B8" TextWrapping="Wrap"/>
+                                    </Border>
+
+                                    <!-- Step 2 -->
+                                    <Border Background="#0E121A" BorderBrush="#20FFFFFF" BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="0,0,0,6">
+                                        <TextBlock Text="{Binding Loc_DlcStep2}" FontSize="11" Foreground="#94A3B8" TextWrapping="Wrap"/>
+                                    </Border>
+
+                                    <!-- Step 3 -->
+                                    <Border Background="#0E121A" BorderBrush="#20FFFFFF" BorderThickness="1" CornerRadius="6" Padding="10,8">
+                                        <TextBlock Text="{Binding Loc_DlcStep3}" FontSize="11" Foreground="#86EFAC" TextWrapping="Wrap"/>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Info Card 3: Cryptographic Integrity & Backup Notice -->
+                            <Border Background="#182015" BorderBrush="#4022C55E" BorderThickness="1" CornerRadius="8" Padding="12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="🔒" FontSize="18" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Kryptographische Signatur &amp; SHA-256" FontSize="11" FontWeight="Bold" Foreground="#86EFAC"/>
+                                        <TextBlock Text="Beim Speichern wird der Manifest-Header aktualisiert und die Prüfsumme sowie Signatur automatisch neu berechnet. Der Spielstand bleibt 100% korruptionsfrei." FontSize="10" Foreground="#A7F3D0" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+
 
         </Grid>
 

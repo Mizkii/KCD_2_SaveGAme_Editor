@@ -57,10 +57,39 @@ namespace KCD2SaveEditor.UI.ViewModels
             {
                 if (SetProperty(ref _isEnabled, value))
                 {
+                    OnPropertyChanged(nameof(StatusBadgeText));
+                    OnPropertyChanged(nameof(StatusBadgeBrush));
+                    OnPropertyChanged(nameof(StatusBadgeBgBrush));
+                    OnPropertyChanged(nameof(StatusBorderBrush));
+                    OnPropertyChanged(nameof(CardBackgroundBrush));
+                    OnPropertyChanged(nameof(CardBorderBrush));
                     OnChanged?.Invoke();
                 }
             }
         }
+
+        public string Icon => _id switch
+        {
+            "QuestForValor" => "🦁",
+            "SeasonPassShields" => "🛡️",
+            "GoldEditionHuntsman" => "🏹",
+            "BrushesWithDeath" => "🎨",
+            "LegacyOfTheForge" => "⚒️",
+            "MysteriaEcclesiae" => "⛪",
+            _ => "💎"
+        };
+
+        public string IdBadge => $"[{_id}]";
+
+        public string StatusBadgeText => _isEnabled
+            ? (GameDataService.Instance.ActiveLanguage.Equals("German", StringComparison.OrdinalIgnoreCase) ? "● Im Spielstand aktiv" : "● Active in Savegame")
+            : (GameDataService.Instance.ActiveLanguage.Equals("German", StringComparison.OrdinalIgnoreCase) ? "○ Deaktiviert (Gestrippt)" : "○ Disabled (Stripped)");
+
+        public string StatusBadgeBrush => _isEnabled ? "#4ADE80" : "#94A3B8";
+        public string StatusBadgeBgBrush => _isEnabled ? "#204ADE80" : "#1A202C";
+        public string StatusBorderBrush => _isEnabled ? "#404ADE80" : "#25FFFFFF";
+        public string CardBackgroundBrush => _isEnabled ? "#141A26" : "#0D1017";
+        public string CardBorderBrush => _isEnabled ? "#35C9A24D" : "#1E2533";
 
         public Action? OnChanged { get; set; }
 
@@ -86,6 +115,7 @@ namespace KCD2SaveEditor.UI.ViewModels
         {
             OnPropertyChanged(nameof(DisplayName));
             OnPropertyChanged(nameof(Description));
+            OnPropertyChanged(nameof(StatusBadgeText));
         }
     }
 }

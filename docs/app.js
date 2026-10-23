@@ -45,6 +45,9 @@ const TRANSLATIONS = {
         feat_6_title: "Fail-Safe Save Integrity",
         feat_6_desc: "High-performance C++20 core (KCD2SaveCore.dll) with miniz Deflate compression, header parsing, auto-backup creation (.bak), and native WGS / Steam path auto-detection.",
         
+        feat_7_title: "DLC Manager & Manifest Stripping",
+        feat_7_desc: "Share savegames across friends even if they don't own DLCs. Strip or toggle DLC requirements (Lion's Crest, Gallant Huntsman, Shields of Seasons, Story Expansions) with 1 click to unlock saves on any base installation.",
+        
         section_gallery_tag: "Visual Walkthrough",
         section_gallery_title: "Editor Feature Screenshots",
         section_gallery_desc: "Explore high-resolution captures of every screen and dialog in the editor.",
@@ -174,6 +177,9 @@ const TRANSLATIONS = {
         
         feat_6_title: "Ausfallsichere Spielstand-Integrität",
         feat_6_desc: "Hochperformanter C++20 Engine Core (KCD2SaveCore.dll) mit miniz Deflate-Kompression, Header-Analyse, automatischer .bak-Sicherung und automatischer Erkennung von Xbox WGS und Steam Verzeichnissen.",
+        
+        feat_7_title: "DLC-Manager & Manifest-Stripping",
+        feat_7_desc: "Teile Spielstände mit Freunden, auch wenn diese keine DLCs besitzen. Entferne oder aktiviere DLC-Abhängigkeiten (Das Wappen des Löwen, Galantes Jäger-Set, Schilde der Jahreszeiten, Story-DLCs) mit 1 Klick für universelle Kompatibilität.",
         
         section_gallery_tag: "Visuelle Tour",
         section_gallery_title: "Screenshots aller Funktionen",

@@ -157,9 +157,10 @@ namespace KCD2SaveEditor.UI.Services
             }
 
             _gameContentPath = targetPath;
-            if (File.Exists(Path.Combine(targetPath, "KingdomCome.exe")))
+            string foundExe = AppSettings.FindGameExe(targetPath);
+            if (!string.IsNullOrEmpty(foundExe))
             {
-                _gameExePath = Path.Combine(targetPath, "KingdomCome.exe");
+                _gameExePath = foundExe;
             }
             else if (!string.IsNullOrEmpty(settings.GameExePath) && File.Exists(settings.GameExePath))
             {
@@ -203,17 +204,24 @@ namespace KCD2SaveEditor.UI.Services
                 return true;
             }
 
-            // Determine initial directory
+            // Determine initial directory & exe
             string initialDir = !string.IsNullOrEmpty(_gameContentPath) && Directory.Exists(_gameContentPath)
                 ? _gameContentPath
                 : DetectGamePath();
 
-            if (string.IsNullOrEmpty(initialDir) || !Directory.Exists(initialDir))
+            string defaultExe = !string.IsNullOrEmpty(initialDir) ? AppSettings.FindGameExe(initialDir) : string.Empty;
+            string dialogInitialDir = !string.IsNullOrEmpty(defaultExe) ? (Path.GetDirectoryName(defaultExe) ?? initialDir) : initialDir;
+
+            if (string.IsNullOrEmpty(dialogInitialDir) || !Directory.Exists(dialogInitialDir))
             {
-                initialDir = @"D:\XboxGames\Kingdom Come- Deliverance II\Content";
-                if (!Directory.Exists(initialDir))
+                dialogInitialDir = @"C:\Program Files (x86)\Steam\steamapps\common\KingdomComeDeliverance2";
+                if (!Directory.Exists(dialogInitialDir))
                 {
-                    initialDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    dialogInitialDir = @"D:\XboxGames\Kingdom Come- Deliverance II\Content";
+                }
+                if (!Directory.Exists(dialogInitialDir))
+                {
+                    dialogInitialDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 }
             }
 
@@ -221,8 +229,8 @@ namespace KCD2SaveEditor.UI.Services
             {
                 Title = "Kingdom Come: Deliverance II — Bitte KingdomCome.exe auswählen / Select KingdomCome.exe",
                 Filter = "Kingdom Come: Deliverance II (KingdomCome.exe)|KingdomCome.exe|Alle Dateien (*.*)|*.*",
-                FileName = "KingdomCome.exe",
-                InitialDirectory = initialDir,
+                FileName = !string.IsNullOrEmpty(defaultExe) ? defaultExe : "KingdomCome.exe",
+                InitialDirectory = dialogInitialDir,
                 CheckFileExists = true
             };
 
@@ -248,8 +256,8 @@ namespace KCD2SaveEditor.UI.Services
                 if (!string.IsNullOrEmpty(_gameContentPath) && Directory.Exists(_gameContentPath))
                 {
                     settings.GameDirectory = _gameContentPath;
-                    string candidateExe = Path.Combine(_gameContentPath, "KingdomCome.exe");
-                    if (File.Exists(candidateExe)) settings.GameExePath = candidateExe;
+                    string candidateExe = AppSettings.FindGameExe(_gameContentPath);
+                    if (!string.IsNullOrEmpty(candidateExe)) settings.GameExePath = candidateExe;
                     settings.FirstStartCompleted = true;
                     settings.Save();
                     return true;
@@ -257,8 +265,8 @@ namespace KCD2SaveEditor.UI.Services
                 else if (!string.IsNullOrEmpty(initialDir) && Directory.Exists(initialDir))
                 {
                     settings.GameDirectory = initialDir;
-                    string candidateExe = Path.Combine(initialDir, "KingdomCome.exe");
-                    if (File.Exists(candidateExe)) settings.GameExePath = candidateExe;
+                    string candidateExe = AppSettings.FindGameExe(initialDir);
+                    if (!string.IsNullOrEmpty(candidateExe)) settings.GameExePath = candidateExe;
                     settings.FirstStartCompleted = true;
                     settings.Save();
                     Initialize(initialDir);
@@ -271,22 +279,69 @@ namespace KCD2SaveEditor.UI.Services
 
         public string DetectGamePath()
         {
-            string[] possiblePaths = {
-                @"D:\XboxGames\Kingdom Come- Deliverance II\Content",
-                @"C:\XboxGames\Kingdom Come- Deliverance II\Content",
-                @"E:\XboxGames\Kingdom Come- Deliverance II\Content",
-                @"F:\XboxGames\Kingdom Come- Deliverance II\Content",
-                @"C:\Program Files (x86)\Steam\steamapps\common\KingdomComeDeliverance2",
-                @"D:\SteamLibrary\steamapps\common\KingdomComeDeliverance2",
-                @"E:\SteamLibrary\steamapps\common\KingdomComeDeliverance2",
-                @"C:\Program Files\Epic Games\KingdomComeDeliverance2"
-            };
+            var candidates = new List<string>();
 
-            foreach (var path in possiblePaths)
+            // 1. Steam Library Detection via Registry & libraryfolders.vdf
+            try
             {
-                if (Directory.Exists(path) &&
-                    (Directory.Exists(Path.Combine(path, "Localization")) || File.Exists(Path.Combine(path, "Data", "Tables.pak"))))
+                var steamBases = new List<string>();
+                string? regSteamPath = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam")?.GetValue("SteamPath")?.ToString();
+                if (!string.IsNullOrEmpty(regSteamPath)) steamBases.Add(regSteamPath.Replace('/', '\\'));
+
+                string? regInstallPath = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Valve\Steam")?.GetValue("InstallPath")?.ToString();
+                if (!string.IsNullOrEmpty(regInstallPath)) steamBases.Add(regInstallPath);
+
+                steamBases.Add(@"C:\Program Files (x86)\Steam");
+                steamBases.Add(@"D:\SteamLibrary");
+
+                foreach (var sPath in steamBases.Distinct(StringComparer.OrdinalIgnoreCase))
                 {
+                    if (!Directory.Exists(sPath)) continue;
+
+                    candidates.Add(Path.Combine(sPath, "steamapps", "common", "KingdomComeDeliverance2"));
+                    candidates.Add(Path.Combine(sPath, "steamapps", "common", "Kingdom Come Deliverance II"));
+
+                    string vdf = Path.Combine(sPath, "steamapps", "libraryfolders.vdf");
+                    if (File.Exists(vdf))
+                    {
+                        var lines = File.ReadAllLines(vdf);
+                        foreach (var line in lines)
+                        {
+                            var match = Regex.Match(line, "\"path\"\\s+\"([^\"]+)\"");
+                            if (match.Success)
+                            {
+                                string libPath = match.Groups[1].Value.Replace(@"\\", @"\");
+                                if (Directory.Exists(libPath))
+                                {
+                                    candidates.Add(Path.Combine(libPath, "steamapps", "common", "KingdomComeDeliverance2"));
+                                    candidates.Add(Path.Combine(libPath, "steamapps", "common", "Kingdom Come Deliverance II"));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            // 2. Drive Scan for Steam, Xbox Game Pass PC & Epic
+            string[] drives = { "C", "D", "E", "F", "G" };
+            foreach (var d in drives)
+            {
+                candidates.Add($@"{d}:\Program Files (x86)\Steam\steamapps\common\KingdomComeDeliverance2");
+                candidates.Add($@"{d}:\SteamLibrary\steamapps\common\KingdomComeDeliverance2");
+                candidates.Add($@"{d}:\XboxGames\Kingdom Come- Deliverance II\Content");
+                candidates.Add($@"{d}:\XboxGames\Kingdom Come- Deliverance II");
+                candidates.Add($@"{d}:\Program Files\Epic Games\KingdomComeDeliverance2");
+            }
+
+            foreach (var path in candidates.Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                if (Directory.Exists(path) && AppSettings.IsValidGameDirectory(path))
+                {
+                    if (Directory.Exists(Path.Combine(path, "Content", "Localization")))
+                    {
+                        return Path.Combine(path, "Content");
+                    }
                     return path;
                 }
             }
