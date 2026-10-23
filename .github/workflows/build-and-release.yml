@@ -1,0 +1,111 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build & Package Release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Configure CMake & Build Native Core (C++20)
+        shell: pwsh
+        run: |
+          cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -A x64
+          cmake --build build --config Release --target KCD2SaveCore kcd2_cli
+          
+          if (-not (Test-Path "build/bin/Release/KCD2SaveCore.dll")) {
+            throw "KCD2SaveCore.dll build output was not found!"
+          }
+
+      - name: Publish WPF UI (.NET 10)
+        shell: pwsh
+        run: |
+          dotnet publish src/ui/KCD2SaveEditor.UI.csproj -c Release -r win-x64 --self-contained false -o publish
+          
+          # Ensure Native Core DLL and CLI are bundled inside publish directory
+          Copy-Item -Path "build/bin/Release/KCD2SaveCore.dll" -Destination "publish/" -Force
+          if (Test-Path "build/bin/Release/kcd2_cli.exe") {
+            Copy-Item -Path "build/bin/Release/kcd2_cli.exe" -Destination "publish/" -Force
+          }
+
+      - name: Package Release ZIP & Generate SHA256 Checksum
+        shell: pwsh
+        run: |
+          $Version = if ($env:GITHUB_REF -like "refs/tags/v*") { $env:GITHUB_REF.Substring(11) } else { "v2.5.0-dev" }
+          $ZipName = "KCD2_SaveEditor_${Version}_win-x64.zip"
+          Compress-Archive -Path "publish/*" -DestinationPath $ZipName -CompressionLevel Optimal
+          
+          $Hash = (Get-FileHash -Algorithm SHA256 $ZipName).Hash
+          "$Hash *$ZipName" | Out-File -FilePath "$ZipName.sha256" -Encoding ascii
+          
+          Write-Host "Created: $ZipName"
+          Write-Host "SHA256: $Hash"
+          echo "ZIP_NAME=$ZipName" >> $env:GITHUB_ENV
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: KCD2_SaveEditor_win-x64
+          path: |
+            ${{ env.ZIP_NAME }}
+            ${{ env.ZIP_NAME }}.sha256
+
+      - name: Publish GitHub Release (on tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Kingdom Come: Deliverance II Save Editor ${{ github.ref_name }}
+          files: |
+            ${{ env.ZIP_NAME }}
+            ${{ env.ZIP_NAME }}.sha256
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+
+  deploy-pages:
+    name: Deploy GitHub Pages
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

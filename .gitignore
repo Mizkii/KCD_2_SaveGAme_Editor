@@ -1,0 +1,50 @@
+# Build Directories
+bin/
+obj/
+build/
+out/
+publish/
+x64/
+x86/
+
+# Visual Studio / Rider / VSCode
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vscode/
+.idea/
+
+# Compiled Binaries & Libraries
+*.dll
+*.exe
+*.pdb
+*.lib
+*.exp
+*.ilk
+*.obj
+
+# Game Saves & Payloads (Strictly exclude all test saves and binaries)
+*.whs
+*.bak
+*.whs.bak
+*.bin
+SaveGames/
+saves/
+test_saves/
+Reversing/
+
+# Logs & Temp files
+*.log
+crash_log.txt
+screenshot_error.log
+
+# IDA Pro database artifacts
+*.idb
+*.i64
+*.nam
+*.til
+*.id0
+*.id1
+*.id2
