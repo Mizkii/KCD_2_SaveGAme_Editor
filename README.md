@@ -7,7 +7,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Steam%20%7C%20Xbox%20Game%20Pass%20(PC)-blue.svg)](#cross-platform-support)
 [![Core](https://img.shields.io/badge/Core-Native%20C%2B%2B20-orange.svg)](#architecture)
 [![Frontend](https://img.shields.io/badge/UI-.NET%2010%20WPF-purple.svg)](#architecture)
-[![Release](https://img.shields.io/badge/Release-v2.5.0--PRO-yellow.svg)](https://github.com/Mizkii/KCD_2_SaveGAme_Editor/releases/latest)
+[![Release](https://img.shields.io/badge/Release-v2.5.1--PRO-yellow.svg)](https://github.com/Mizkii/KCD_2_SaveGAme_Editor/releases/latest)
 
 **The ultimate high-performance, reverse-engineered desktop SaveGame Editor for *Kingdom Come: Deliverance II*.**  
 Engineered with a native C++20 parsing engine and a modern dark-medieval .NET 10 WPF user interface.

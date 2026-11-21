@@ -10,7 +10,7 @@ const TRANSLATIONS = {
         nav_specs: "Architecture",
         nav_faq: "FAQ",
         nav_github: "View on GitHub",
-        nav_download: "Download v2.5.0",
+        nav_download: "Download v2.5.1",
         
         hero_tag: "⚔️ NEXT-GEN SAVE EDITOR FOR KCD2",
         hero_title: "Kingdom Come: Deliverance II<br>SaveGame Editor",
@@ -19,7 +19,7 @@ const TRANSLATIONS = {
         hero_btn_source: "⭐ Star on GitHub",
         
         badge_platform: "Steam & Xbox Game Pass",
-        badge_version: "v2.5.0-PRO",
+        badge_version: "v2.5.1-PRO",
         badge_build: "C++20 & .NET 10",
         badge_items: "5,604 Items Codex",
         
@@ -143,7 +143,7 @@ const TRANSLATIONS = {
         nav_specs: "Architektur",
         nav_faq: "FAQ",
         nav_github: "GitHub Repository",
-        nav_download: "v2.5.0 Herunterladen",
+        nav_download: "v2.5.1 Herunterladen",
         
         hero_tag: "⚔️ DER ULTIMATIVE KCD2 SAVE EDITOR",
         hero_title: "Kingdom Come: Deliverance II<br>SaveGame Editor",
@@ -152,7 +152,7 @@ const TRANSLATIONS = {
         hero_btn_source: "⭐ Auf GitHub ansehen",
         
         badge_platform: "Steam & Xbox Game Pass",
-        badge_version: "v2.5.0-PRO",
+        badge_version: "v2.5.1-PRO",
         badge_build: "C++20 & .NET 10",
         badge_items: "5.604 Gegenstände Codex",
         

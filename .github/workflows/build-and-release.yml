@@ -55,7 +55,7 @@ jobs:
       - name: Package Release ZIP & Generate SHA256 Checksum
         shell: pwsh
         run: |
-          $Version = if ($env:GITHUB_REF -like "refs/tags/v*") { $env:GITHUB_REF.Substring(11) } else { "v2.5.0-dev" }
+          $Version = if ($env:GITHUB_REF -like "refs/tags/v*") { $env:GITHUB_REF.Substring(11) } else { "v2.5.1-dev" }
           $ZipName = "KCD2_SaveEditor_${Version}_win-x64.zip"
           Compress-Archive -Path "publish/*" -DestinationPath $ZipName -CompressionLevel Optimal
           

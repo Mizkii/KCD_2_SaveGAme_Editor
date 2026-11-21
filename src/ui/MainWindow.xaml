@@ -16,7 +16,7 @@
 
         mc:Ignorable="d"
 
-        Title="KCD II // SAVE EDITOR v2.5.0" 
+        Title="KCD II // SAVE EDITOR v2.5.1" 
 
         Height="940" Width="1540"
 
@@ -2335,7 +2335,7 @@
 
                         <Border Background="#20C9A24D" BorderBrush="#40C9A24D" BorderThickness="1" CornerRadius="3" Padding="4,0" Margin="8,0,0,0" VerticalAlignment="Center">
 
-                            <TextBlock Text="v2.5.0-PRO" FontSize="9" FontWeight="Bold" Foreground="#E5C478" FontFamily="Consolas"/>
+                            <TextBlock Text="v2.5.1-PRO" FontSize="9" FontWeight="Bold" Foreground="#E5C478" FontFamily="Consolas"/>
 
                         </Border>
 
