@@ -46,7 +46,7 @@ The KCD2 SaveGame Editor is split into two cleanly separated tiers:
 ## 2. Directory Structure
 
 ```
-d:\Projects\KCD_2_SaveGAme_Editor\
+<repo root>\
 |-- CMakeLists.txt                # Root CMake for C++ Core & Tests
 |-- KCD2SaveEditor.sln            # Visual Studio Solution (.NET + C++)
 |-- include/

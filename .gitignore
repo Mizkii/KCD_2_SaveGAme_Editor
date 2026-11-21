@@ -38,7 +38,6 @@ Reversing/
 # Logs & Temp files
 *.log
 crash_log.txt
-screenshot_error.log
 
 # IDA Pro database artifacts
 *.idb

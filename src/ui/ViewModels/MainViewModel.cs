@@ -11508,10 +11508,6 @@ namespace KCD2SaveEditor.UI.ViewModels
 
 
 
-                @"D:\Projects\KCD_2_SaveGAme_Editor\SaveGames",
-
-
-
                 Path.Combine(Environment.CurrentDirectory, "SaveGames"),
 
 

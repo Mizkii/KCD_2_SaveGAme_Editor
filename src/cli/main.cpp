@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <filesystem>
+#include <string>
 #include "kcd2_save_api.h"
 
 void TestSave(const char* path) {
@@ -52,12 +54,13 @@ void TestSave(const char* path) {
     kcd2_save_close(handle);
 }
 
-void TestHorseRoundtrip() {
+void TestHorseRoundtrip(const char* savePath) {
     std::cout << "\n====================================================\n";
     std::cout << "[+] Testing Horse Stats Roundtrip...\n";
     kcd2_save_handle_t handle = nullptr;
-    if (kcd2_save_open("C:/Users/Mizkii/Downloads/kuttenberg-maksimalnye-kharakteristiki_1767132967_805988/KuttenbergSave/autosave178.whs", &handle) != KCD2_OK) {
-        std::cerr << "[-] Failed to open test save\n";
+    if (kcd2_save_open(savePath, &handle) != KCD2_OK) {
+        std::cerr << "[-] Failed to open " << savePath << ": "
+                  << kcd2_get_last_error_message() << "\n";
         return;
     }
 
@@ -69,13 +72,22 @@ void TestHorseRoundtrip() {
     hStats.max_health = 180.0f;
     kcd2_save_set_horse_stats(handle, &hStats);
 
-    const char* testOut = "D:/Projects/KCD_2_SaveGAme_Editor/build/test_horse.whs";
-    kcd2_save_write(handle, testOut, 0);
+    // Write the roundtrip result to the system temp directory instead of a
+    // fixed location so the tool works on any machine.
+    std::filesystem::path testOutPath;
+    try {
+        testOutPath = std::filesystem::temp_directory_path() / "kcd2_test_horse.whs";
+    } catch (...) {
+        testOutPath = "kcd2_test_horse.whs";
+    }
+    const std::string testOut = testOutPath.string();
+
+    kcd2_save_write(handle, testOut.c_str(), 0);
     kcd2_save_close(handle);
 
     // Reopen and verify
     kcd2_save_handle_t checkHandle = nullptr;
-    if (kcd2_save_open(testOut, &checkHandle) == KCD2_OK) {
+    if (kcd2_save_open(testOut.c_str(), &checkHandle) == KCD2_OK) {
         KCD2_HorseStats readStats;
         kcd2_save_get_horse_stats(checkHandle, &readStats);
         std::cout << "Re-read HP: " << readStats.health << "/" << readStats.max_health << "\n";
@@ -89,10 +101,22 @@ void TestHorseRoundtrip() {
 }
 
 int main(int argc, char** argv) {
-    if (argc > 1) {
-        TestSave(argv[1]);
+    if (argc < 2) {
+        std::cout << "Usage:\n"
+                  << "  " << argv[0] << " <save.whs>              Show save info\n"
+                  << "  " << argv[0] << " --roundtrip <save.whs>   Horse stats write/reload test\n";
+        return 1;
+    }
+
+    if (std::string(argv[1]) == "--roundtrip") {
+        if (argc < 3) {
+            std::cerr << "[-] --roundtrip requires a save file path\n";
+            return 1;
+        }
+        TestHorseRoundtrip(argv[2]);
         return 0;
     }
-    TestHorseRoundtrip();
+
+    TestSave(argv[1]);
     return 0;
 }

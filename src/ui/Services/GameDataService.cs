@@ -214,10 +214,21 @@ namespace KCD2SaveEditor.UI.Services
 
             if (string.IsNullOrEmpty(dialogInitialDir) || !Directory.Exists(dialogInitialDir))
             {
-                dialogInitialDir = @"C:\Program Files (x86)\Steam\steamapps\common\KingdomComeDeliverance2";
+                string programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                dialogInitialDir = Path.Combine(programFilesX86, "Steam", "steamapps", "common", "KingdomComeDeliverance2");
+
                 if (!Directory.Exists(dialogInitialDir))
                 {
-                    dialogInitialDir = @"D:\XboxGames\Kingdom Come- Deliverance II\Content";
+                    foreach (var drive in DriveInfo.GetDrives())
+                    {
+                        if (drive.DriveType != DriveType.Fixed || !drive.IsReady) continue;
+                        string xboxDir = Path.Combine(drive.RootDirectory.FullName, "XboxGames", "Kingdom Come- Deliverance II", "Content");
+                        if (Directory.Exists(xboxDir))
+                        {
+                            dialogInitialDir = xboxDir;
+                            break;
+                        }
+                    }
                 }
                 if (!Directory.Exists(dialogInitialDir))
                 {
@@ -291,8 +302,15 @@ namespace KCD2SaveEditor.UI.Services
                 string? regInstallPath = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Valve\Steam")?.GetValue("InstallPath")?.ToString();
                 if (!string.IsNullOrEmpty(regInstallPath)) steamBases.Add(regInstallPath);
 
-                steamBases.Add(@"C:\Program Files (x86)\Steam");
-                steamBases.Add(@"D:\SteamLibrary");
+                string programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                if (!string.IsNullOrEmpty(programFilesX86))
+                    steamBases.Add(Path.Combine(programFilesX86, "Steam"));
+
+                foreach (var drive in DriveInfo.GetDrives())
+                {
+                    if (drive.DriveType != DriveType.Fixed || !drive.IsReady) continue;
+                    steamBases.Add(Path.Combine(drive.RootDirectory.FullName, "SteamLibrary"));
+                }
 
                 foreach (var sPath in steamBases.Distinct(StringComparer.OrdinalIgnoreCase))
                 {
@@ -324,14 +342,15 @@ namespace KCD2SaveEditor.UI.Services
             catch { }
 
             // 2. Drive Scan for Steam, Xbox Game Pass PC & Epic
-            string[] drives = { "C", "D", "E", "F", "G" };
-            foreach (var d in drives)
+            foreach (var drive in DriveInfo.GetDrives())
             {
-                candidates.Add($@"{d}:\Program Files (x86)\Steam\steamapps\common\KingdomComeDeliverance2");
-                candidates.Add($@"{d}:\SteamLibrary\steamapps\common\KingdomComeDeliverance2");
-                candidates.Add($@"{d}:\XboxGames\Kingdom Come- Deliverance II\Content");
-                candidates.Add($@"{d}:\XboxGames\Kingdom Come- Deliverance II");
-                candidates.Add($@"{d}:\Program Files\Epic Games\KingdomComeDeliverance2");
+                if (drive.DriveType != DriveType.Fixed || !drive.IsReady) continue;
+                string root = drive.RootDirectory.FullName;
+                candidates.Add(Path.Combine(root, "Program Files (x86)", "Steam", "steamapps", "common", "KingdomComeDeliverance2"));
+                candidates.Add(Path.Combine(root, "SteamLibrary", "steamapps", "common", "KingdomComeDeliverance2"));
+                candidates.Add(Path.Combine(root, "XboxGames", "Kingdom Come- Deliverance II", "Content"));
+                candidates.Add(Path.Combine(root, "XboxGames", "Kingdom Come- Deliverance II"));
+                candidates.Add(Path.Combine(root, "Program Files", "Epic Games", "KingdomComeDeliverance2"));
             }
 
             foreach (var path in candidates.Distinct(StringComparer.OrdinalIgnoreCase))

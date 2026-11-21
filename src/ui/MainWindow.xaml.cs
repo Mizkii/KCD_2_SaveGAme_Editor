@@ -1,13 +1,9 @@
 using System;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows.Interop;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace KCD2SaveEditor.UI;
 
@@ -34,152 +30,9 @@ public partial class MainWindow : Window
     {
         UpdateWindowStateLayout();
 
-        string[] args = Environment.GetCommandLineArgs();
-        int screenIdx = Array.IndexOf(args, "--capture-screenshots");
-        if (screenIdx >= 0 && screenIdx + 1 < args.Length)
-        {
-            string outDir = args[screenIdx + 1];
-            _ = RunScreenshotSequenceAsync(outDir);
-            return;
-        }
-
         if (DataContext is ViewModels.MainViewModel vm)
         {
             vm.CheckFirstStartGameExePrompt();
-        }
-    }
-
-    private async Task RunScreenshotSequenceAsync(string outDir)
-    {
-        try
-        {
-            Directory.CreateDirectory(outDir);
-            if (DataContext is not ViewModels.MainViewModel vm) return;
-
-            WindowState = WindowState.Normal;
-            Width = 1600;
-            Height = 980;
-            Left = 40;
-            Top = 40;
-            UpdateLayout();
-
-            // Load save340.whs if not loaded
-            string saveFile = @"D:\Projects\KCD_2_SaveGAme_Editor\SaveGames\save340.whs";
-            if (File.Exists(saveFile) && !vm.IsSaveLoaded)
-            {
-                vm.LoadSaveFile(saveFile);
-            }
-
-            async Task CaptureAsync(string filename)
-            {
-                await Task.Delay(400);
-                UpdateLayout();
-                await System.Windows.Threading.Dispatcher.Yield(System.Windows.Threading.DispatcherPriority.Render);
-                await Task.Delay(200);
-
-                int w = Math.Max(1, (int)ActualWidth);
-                int h = Math.Max(1, (int)ActualHeight);
-                var rtb = new RenderTargetBitmap(w, h, 96, 96, PixelFormats.Pbgra32);
-                rtb.Render(this);
-                var encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(rtb));
-                string targetPath = Path.Combine(outDir, filename);
-                using (var fs = File.Create(targetPath))
-                {
-                    encoder.Save(fs);
-                }
-            }
-
-            // 1. Inventory View with Henry Paperdoll & Defense Matrix
-            vm.SwitchMainTabCommand.Execute("Inventar");
-            vm.SelectedInventoryTarget = "Henry";
-            await CaptureAsync("01_player_henry_paperdoll.png");
-
-            // 2. Paperdoll Slot Picker Modal (Helmet slot)
-            var helmSlot = vm.LeftPaperdollSlots.FirstOrDefault(s => s.Id == "slot_helm") ?? vm.LeftPaperdollSlots.FirstOrDefault();
-            if (helmSlot != null)
-            {
-                helmSlot.ClickCommand?.Execute(null);
-                await CaptureAsync("02_slot_equipment_modal.png");
-                vm.CloseSlotPickerModalCommand.Execute(null);
-            }
-
-            // 3. Inventory View with Pebbles Horse Tack Slots & Tack Outfits I/II/III
-            vm.SwitchMainTabCommand.Execute("Inventar");
-            vm.SelectedInventoryTarget = "Pebbles";
-            await CaptureAsync("03_horse_tack_inventory.png");
-
-            // 4. Horse Tack Slot Equipment Modal (Saddle)
-            var saddleSlot = vm.HorseEquipmentSlots.FirstOrDefault(s => s.Id == "horse_saddle") ?? vm.HorseEquipmentSlots.FirstOrDefault();
-            if (saddleSlot != null)
-            {
-                saddleSlot.ClickCommand?.Execute(null);
-                await CaptureAsync("04_horse_tack_modal.png");
-                vm.CloseSlotPickerModalCommand.Execute(null);
-            }
-
-            // 5. Player Tab - Henry Character Attributes & Reputation
-            vm.SwitchMainTabCommand.Execute("Spieler");
-            vm.SwitchPlayerSubTabCommand.Execute("Henry");
-            await CaptureAsync("05_player_attributes_reputation.png");
-
-            // 6. Player Tab - Mutt Dog Companion (Skills & Obedience)
-            vm.SwitchMainTabCommand.Execute("Spieler");
-            vm.SwitchPlayerSubTabCommand.Execute("Dog");
-            await CaptureAsync("06_companion_dog.png");
-
-            // 7. Player Tab - Pebbles Mount Stats & Horsemanship
-            vm.SwitchMainTabCommand.Execute("Spieler");
-            vm.SwitchPlayerSubTabCommand.Execute("Horse");
-            await CaptureAsync("07_companion_horse.png");
-
-            // 8. Codex Item Spawner Dialog (5,604 Items Database)
-            vm.SwitchMainTabCommand.Execute("Inventar");
-            vm.OpenAddItemModalCommand.Execute(null);
-            await CaptureAsync("08_codex_spawner_modal.png");
-            vm.CloseAddItemModalCommand.Execute(null);
-
-            // 9. Questlog Missions View (Active, Objectives, Categories)
-            vm.SwitchMainTabCommand.Execute("Questlog");
-            vm.SwitchQuestSubTabCommand.Execute("Missions");
-            await CaptureAsync("09_questlog_missions.png");
-
-            // 10. Key Game Characters & Fates (Radzig, Capon, Theresa, Revive)
-            vm.SwitchMainTabCommand.Execute("Questlog");
-            vm.SwitchQuestSubTabCommand.Execute("Fates");
-            await CaptureAsync("10_questlog_fates.png");
-
-            // 11. Crafting & Alchemy (Herbalism pouch, Blacksmithing, Autobrew)
-            vm.SwitchMainTabCommand.Execute("Handwerk");
-            await CaptureAsync("11_crafting_alchemy.png");
-
-            // 12. German Localization & Platform Overview
-            var deLang = vm.AvailableLanguages.FirstOrDefault(x => x.Code.Equals("German", StringComparison.OrdinalIgnoreCase) || x.Code.Equals("Deutsch", StringComparison.OrdinalIgnoreCase));
-            if (deLang != null)
-            {
-                vm.SelectedLanguage = deLang;
-            }
-            vm.SwitchMainTabCommand.Execute("Inventar");
-            vm.SelectedInventoryTarget = "Henry";
-            await CaptureAsync("12_overview_german.png");
-
-            // 13. English Localization Overview
-            var engLang = vm.AvailableLanguages.FirstOrDefault(x => x.Code.Equals("English", StringComparison.OrdinalIgnoreCase));
-            if (engLang != null)
-            {
-                vm.SelectedLanguage = engLang;
-            }
-            vm.SwitchMainTabCommand.Execute("Inventar");
-            vm.SelectedInventoryTarget = "Henry";
-            await CaptureAsync("13_overview_english.png");
-        }
-        catch (Exception ex)
-        {
-            try { File.WriteAllText("screenshot_error.log", ex.ToString()); } catch { }
-        }
-        finally
-        {
-            Application.Current.Shutdown(0);
         }
     }
 
